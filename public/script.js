@@ -135,7 +135,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Automatically select the center of the gradient picker when the page loads
     selectCenterOfGradient();
-
-    // Automatically select the center of the gradient picker when the page loads
-    selectCenterOfGradient();
 });
