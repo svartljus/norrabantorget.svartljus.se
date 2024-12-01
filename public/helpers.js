@@ -75,6 +75,26 @@ const generateLydianScale = (baseNote) => {
     return notes;
 };
 
+// Assign notes to elements based on their data-id
+const assignNotesToElements = (baseNote) => {
+    const elements = [...document.querySelectorAll("[data-id]")];
+    const lydianScale = generateLydianScale(baseNote);
+
+    // Sort elements by data-id (numerical sort)
+    elements.sort((a, b) => parseInt(a.dataset.id) - parseInt(b.dataset.id));
+
+    // Reverse the scale to match highest pitches with highest data-id
+    const reversedScale = lydianScale.reverse();
+
+    elements.forEach((element, index) => {
+        const note = reversedScale[index % reversedScale.length];
+        element.dataset.note = note; // Assign the note to the element
+        element.addEventListener("click", () => playNote(note)); // Play note on click
+    });
+};
+// Example of how to call the function with a base note
+
+
 // Get color at the position on the gradient picker
 const getColorAtPosition = (x, y, element) => {
     const canvas = document.createElement("canvas");

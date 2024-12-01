@@ -72,6 +72,7 @@ body {
     background-color: #f9f9f9;
     user-select: none; /* Prevent text selection on touch */
     touch-action: manipulation; /* Allow necessary interactions */
+    direction: ltr;
 }
 
 /* Light box styling */
@@ -126,7 +127,6 @@ body {
         violet
     );
     position: relative;
-    cursor: crosshair;
     border: 2px solid black;
 }
 
@@ -150,6 +150,41 @@ body {
     .content {
         grid-template-rows: none;
         grid-template-columns: repeat(10, 1fr);
-        direction: rtl; /* Flips column direction */
     }
 }
+
+/* Landscape mode: Switch to horizontal grid */
+@media (orientation: portrait) {
+    .light[data-id="1"] {
+        order:10;
+    }
+    .light[data-id="2"] {
+        order:9;
+    }
+    .light[data-id="3"] {
+        order:8;
+    }
+    .light[data-id="4"] {
+        order:7;
+    }
+    .light[data-id="5"] {
+        order:6;
+    }
+    .light[data-id="6"] {
+        order:5;
+    }
+    .light[data-id="7"] {
+        order:4;
+    }
+    .light[data-id="8"] {
+        order:3;
+    }
+    .light[data-id="9"] {
+        order:2;
+    }
+    .light[data-id="10"] {
+        order:1;
+    }
+}
+
+

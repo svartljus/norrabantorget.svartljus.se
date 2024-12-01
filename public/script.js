@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let activeColor = [255, 0, 0];
     let currentNoteMapping = [];
     let activeLight = null; // To keep track of the light that is currently active during touchmove
+    let baseNote = "C4";
 
     // Send WebSocket message
     const sendWebSocketMessage = (type, id, color) => {
@@ -141,4 +142,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Automatically select the center of the gradient picker when the page loads
     selectCenterOfGradient();
+    assignNotesToElements(baseNote);
 });
