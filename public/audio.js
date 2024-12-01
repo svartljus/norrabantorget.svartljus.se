@@ -1,6 +1,13 @@
-// Initialize Tone.js Synth
 let audioStarted = false;
 let synth = null;
+
+const startScreen = document.getElementById("startScreen");
+const startButton = document.getElementById("startButton");
+
+startButton.addEventListener("click", () => {
+    startAudioContext();
+    startScreen.remove();
+});
 
 const startAudioContext = () => {
     if (!audioStarted) {
@@ -12,7 +19,6 @@ const startAudioContext = () => {
     }
 };
 
-// Play a note
 const playNote = (note) => {
     if (audioStarted && synth) {
         const currentTime = Tone.now();

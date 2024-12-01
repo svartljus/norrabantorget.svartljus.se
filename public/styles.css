@@ -1,16 +1,19 @@
+/* Reset default margin, padding, and box-sizing for all elements */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Ensure no unnecessary scroll bars and manage effective viewport height */
+/* Base styles for the document */
 html, body {
     height: 100%;
-    overflow: hidden; /* Prevent scrollbars */
-    touch-action: none; /* Disable default browser gestures */
+    overflow: hidden; /* Prevent unnecessary scrollbars */
+    touch-action: none; /* Disable default browser gestures globally */
+    font-family: Arial, sans-serif;
 }
 
+/* Start screen styling */
 .start-screen {
     position: fixed;
     top: 0;
@@ -21,7 +24,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Keep it above everything else */
+    z-index: 1000; /* Ensure it stays above everything else */
 }
 
 .start-button {
@@ -39,10 +42,8 @@ html, body {
     background-color: #e67e22;
 }
 
-
-
+/* General body styling for layout */
 body {
-    font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     height: 100dvh; /* Use effective viewport height for better UX on iOS */
@@ -58,36 +59,35 @@ body {
 }
 
 .header h1 {
-    margin: 0;
     font-size: 1.4rem;
     text-align: center;
 }
 
 /* Content styling */
 .content {
-    flex: 1; /* Allow content to fill the remaining space */
+    flex: 1; /* Fill the remaining space */
     display: grid;
     grid-template-rows: repeat(10, 1fr);
     gap: 10px;
     padding: 10px;
     background-color: #f9f9f9;
     user-select: none; /* Prevent text selection on touch */
-    touch-action: manipulation; /* Allow necessary interaction */
+    touch-action: manipulation; /* Allow necessary interactions */
 }
 
-/* Default styling for boxes */
+/* Light box styling */
 .light {
-    user-select: none; /* Prevent text selection on touch */
-    touch-action: manipulation; /* Allow interaction like clicking/tapping */
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--light-bg-color, transparent); /* Use CSS variable */
-    border: 2px solid black; /* Black border */
+    background-color: var(--light-bg-color, transparent); /* CSS variable for dynamic color */
+    border: 2px solid black;
     color: black;
     font-size: 1.2rem;
     border-radius: 4px;
     transition: background-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+    user-select: none; /* Prevent text selection */
+    touch-action: manipulation; /* Allow interactions like clicking/tapping */
 }
 
 .light:hover {
@@ -96,14 +96,12 @@ body {
 
 /* Footer styling */
 .footer {
-    flex: 0 0 20dvh; /* Footer height using effective dynamic viewport height for consistency */
+    flex: 0 0 20dvh; /* Footer height using effective dynamic viewport height */
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     background-color: #333;
-    padding: 0;
-    margin: 0;
 }
 
 #colorSelector {
@@ -113,14 +111,6 @@ body {
     outline: none;
     cursor: pointer;
     background: none;
-}
-
-/* Landscape mode: Switch to horizontal grid */
-@media (orientation: landscape) {
-    .content {
-        grid-template-rows: none;
-        grid-template-columns: repeat(10, 1fr);
-    }
 }
 
 /* Gradient picker styling */
@@ -135,10 +125,6 @@ body {
 
 /* Color marker styling */
 #colorMarker {
-    user-select: none; /* Prevent text selection on touch */
-    touch-action: manipulation; /* Allow interaction like clicking/tapping */
-    
-
     position: absolute;
     width: 10px;
     height: 10px;
@@ -146,6 +132,16 @@ body {
     border: 2px solid white;
     background: black;
     pointer-events: none; /* Ensure it doesn't interfere with clicking */
-    transform: translate(-50%, -50%); /* Center the marker at the click point */
+    transform: translate(-50%, -50%); /* Center the marker */
     display: none; /* Hidden initially */
+    user-select: none; /* Prevent text selection */
+    touch-action: manipulation; /* Allow necessary interactions */
+}
+
+/* Landscape mode: Switch to horizontal grid */
+@media (orientation: landscape) {
+    .content {
+        grid-template-rows: none;
+        grid-template-columns: repeat(10, 1fr);
+    }
 }
