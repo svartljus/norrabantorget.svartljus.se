@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    flex: 0 0 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.content {
+    flex: 0 0 70%;
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    gap: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+/* Default styling for boxes */
+.light {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--light-bg-color, transparent); /* Use CSS variable */
+    border: 2px solid black; /* Black border */
+    color: black;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    transition: background-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.light:hover {
+    cursor: pointer;
+}
+
+.footer {
+    flex: 0 0 20%; /* Footer height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: #333;
+    padding: 0;
+    margin: 0;
+}
+
+#colorSelector {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: none;
+}
+
+/* Landscape mode: Switch to horizontal grid */
+@media (orientation: landscape) {
+    .content {
+        grid-template-rows: none;
+        grid-template-columns: repeat(10, 1fr);
+    }
+}
