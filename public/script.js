@@ -2,24 +2,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const gradientPicker = document.getElementById("gradientPicker");
     const colorMarker = document.getElementById("colorMarker");
     const lights = document.querySelectorAll(".light");
-    const content = document.querySelector(".content"); // Container of all lights
     const ws = new WebSocket("wss://sync.possan.codes/broadcast/dendrolux");
     let activeColor = [255, 0, 0];
-    let audioStarted = false;
-    const synth = new Tone.Synth().toDestination();
-    let lastTriggeredTime = 0;
     let currentNoteMapping = [];
-    let activeLight = null; // To keep track of the light that is currently active during touchmove
 
-    // Start the AudioContext on user interaction
-    const startAudioContext = () => {
-        if (!audioStarted) {
-            Tone.start().then(() => {
-                console.log("AudioContext started");
-                audioStarted = true;
-            });
-        }
-    };
+    const startScreen = document.getElementById("startScreen");
+    const startButton = document.getElementById("startButton");
+
+    // Handle the Start Button Click
+    startButton.addEventListener("click", () => {
+        // Start the AudioContext using the function from audio.js
+        startAudioContext();
+        // Hide the start screen
+        startScreen.remove();
+    });
 
     // Send WebSocket message
     const sendWebSocketMessage = (type, id, color) => {
@@ -34,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const rgbToArray = (rgbString) => {
         return rgbString.match(/\d+/g).map(Number);
     };
+
     // Determine base note from position on gradient picker
     const getBaseNoteFromPosition = (x, width) => {
         const scale = ["C", "D", "E", "F", "G", "A", "B"];
@@ -50,36 +47,32 @@ document.addEventListener("DOMContentLoaded", () => {
             return "C4"; // Fallback to default note
         }
 
-        const baseNote = `${note}${octave}`;
-        console.log("Calculated Base Note:", baseNote);
-        return baseNote;
+        return `${note}${octave}`;
     };
 
-   // Generate Lydian scale notes based on the base note
-   const generateLydianScale = (baseNote) => {
-    const scaleNotes = ["C", "D", "E", "F#", "G", "A", "B"];
-    const baseNoteName = baseNote.slice(0, -1);
-    const octave = parseInt(baseNote.slice(-1));
+    // Generate Lydian scale notes based on the base note
+    const generateLydianScale = (baseNote) => {
+        const scaleNotes = ["C", "D", "E", "F#", "G", "A", "B"];
+        const baseNoteName = baseNote.slice(0, -1);
+        const octave = parseInt(baseNote.slice(-1));
 
-    // Check if the base note is valid
-    if (!scaleNotes.includes(baseNoteName) || isNaN(octave)) {
-        console.error("Invalid base note for Lydian scale generation:", baseNote);
-        return generateLydianScale("C4"); // Fallback to default scale with C4
-    }
+        if (!scaleNotes.includes(baseNoteName) || isNaN(octave)) {
+            console.error("Invalid base note for Lydian scale generation");
+            return generateLydianScale("C4"); // Fallback to default scale
+        }
 
-    let notes = [];
-    const baseNoteIndex = scaleNotes.indexOf(baseNoteName);
+        let notes = [];
+        const baseNoteIndex = scaleNotes.indexOf(baseNoteName);
 
-    // Generate the Lydian scale from the base note
-    for (let i = 0; i < 10; i++) {
-        const noteIndex = (baseNoteIndex + i) % scaleNotes.length;
-        const noteOctave = octave + Math.floor((baseNoteIndex + i) / scaleNotes.length);
-        notes.push(`${scaleNotes[noteIndex]}${noteOctave}`);
-    }
-
-    console.log("Generated Lydian Scale Notes:", notes);
-    return notes;
-};
+        // Generate the Lydian scale from the base note
+        for (let i = 0; i < 10; i++) {
+            const noteIndex = (baseNoteIndex + i) % scaleNotes.length;
+            const noteOctave =
+                octave + Math.floor((baseNoteIndex + i) / scaleNotes.length);
+            notes.push(`${scaleNotes[noteIndex]}${noteOctave}`);
+        }
+        return notes;
+    };
 
     // Get color at the position on the gradient picker
     const getColorAtPosition = (x, y, element) => {
@@ -123,19 +116,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Generate 10 unique notes using the Lydian scale for the lights
         currentNoteMapping = generateLydianScale(baseNote);
-        console.log(
-            "Generated Lydian Note Mapping for Lights:",
-            currentNoteMapping
-        );
+        console.log("Generated Lydian Note Mapping for Lights:", currentNoteMapping);
     };
 
+    // Handle click on gradient picker
+    gradientPicker.addEventListener("click", (event) => {
+        const rect = gradientPicker.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const rgbString = getColorAtPosition(x, y, gradientPicker);
+        activeColor = rgbToArray(rgbString);
+
+        // Update color marker position and color
+        colorMarker.style.display = "block";
+        colorMarker.style.left = `${x}px`;
+        colorMarker.style.top = `${y}px`;
+        colorMarker.style.backgroundColor = rgbString;
+
+        // Calculate the base note based on the x position
+        const baseNote = getBaseNoteFromPosition(x, gradientPicker.offsetWidth);
+        console.log("Selected Base Note:", baseNote);
+
+        // Generate 10 unique notes using the Lydian scale for the lights
+        currentNoteMapping = generateLydianScale(baseNote);
+        console.log("Generated Lydian Note Mapping for Lights:", currentNoteMapping);
+    });
+
     // Handle entering a light area
-    const handleEnter = (light) => {
+    const handleEnter = (event) => {
+        const light = event.currentTarget;
         const lightId = parseInt(light.dataset.id) - 1; // Convert dataset id to 0-indexed value
 
         if (audioStarted && currentNoteMapping.length === 10) {
-            const currentTime = Tone.now();
-
             light.style.setProperty(
                 "--light-bg-color",
                 `rgb(${activeColor.join(", ")})`
@@ -144,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const note = currentNoteMapping[lightId];
             if (note) {
                 console.log(`Playing note for light ${lightId + 1}: ${note}`);
-                synth.triggerAttackRelease(note, "16n", currentTime);
+                playNote(note); // Use playNote() from audio.js
             } else {
                 console.error(`No valid note found for light ${lightId + 1}`);
             }
@@ -156,7 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Handle exiting a light area
-    const handleExit = (light) => {
+    const handleExit = (event) => {
+        const light = event.currentTarget;
         const lightId = parseInt(light.dataset.id);
         light.style.setProperty("--light-bg-color", "transparent");
         sendWebSocketMessage("exit", lightId);
@@ -165,39 +178,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add event listeners to each light
     lights.forEach((light, index) => {
         light.dataset.id = index + 1;
-        light.addEventListener("mouseenter", () => handleEnter(light));
-        light.addEventListener("mouseleave", () => handleExit(light));
-        light.addEventListener("touchstart", () => handleEnter(light));
-        light.addEventListener("touchend", () => handleExit(light));
-    });
-
-    // Add touchmove event listener to track finger movement across lights
-    content.addEventListener("touchmove", (event) => {
-        const touch = event.touches[0];
-        const touchedElement = document.elementFromPoint(
-            touch.clientX,
-            touch.clientY
-        );
-
-        if (touchedElement && touchedElement.classList.contains("light")) {
-            if (activeLight !== touchedElement) {
-                // If the active light changes, handle enter for the new light
-                if (activeLight) {
-                    handleExit(activeLight);
-                }
-                activeLight = touchedElement;
-                handleEnter(activeLight);
-            }
-        } else {
-            // If touch moves away from lights
-            if (activeLight) {
-                handleExit(activeLight);
-                activeLight = null;
-            }
-        }
+        light.addEventListener("mouseenter", handleEnter);
+        light.addEventListener("touchstart", handleEnter);
+        light.addEventListener("mouseleave", handleExit);
+        light.addEventListener("touchend", handleExit);
     });
 
     // Automatically select the center of the gradient picker when the page loads
     selectCenterOfGradient();
-    window.addEventListener("click", startAudioContext);
 });

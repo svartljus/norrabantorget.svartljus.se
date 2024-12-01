@@ -4,22 +4,53 @@
     box-sizing: border-box;
 }
 
-/* Disable all touch gestures globally */
+/* Ensure no unnecessary scroll bars and manage effective viewport height */
 html, body {
-    touch-action: none;
+    height: 100%;
     overflow: hidden; /* Prevent scrollbars */
-  }
+    touch-action: none; /* Disable default browser gestures */
+}
+
+.start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Keep it above everything else */
+}
+
+.start-button {
+    background-color: #f39c12;
+    color: white;
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+    background-color: #e67e22;
+}
+
 
 
 body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    height: 100svh; /* Use effective viewport height for better UX on mobile */
+    height: 100dvh; /* Use effective viewport height for better UX on iOS */
 }
 
+/* Header styling */
 .header {
-    flex: 0 0 10lvh; /* Use 10% of the large viewport height */
+    flex: 0 0 10dvh; /* Use 10% of the effective dynamic viewport height */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,22 +63,22 @@ body {
     text-align: center;
 }
 
+/* Content styling */
 .content {
-    flex: 1; /* Allow the content to fill the remaining space */
+    flex: 1; /* Allow content to fill the remaining space */
     display: grid;
     grid-template-rows: repeat(10, 1fr);
     gap: 10px;
     padding: 10px;
     background-color: #f9f9f9;
     user-select: none; /* Prevent text selection on touch */
-    touch-action: manipulation; /* Allow interaction on buttons */
+    touch-action: manipulation; /* Allow necessary interaction */
 }
 
 /* Default styling for boxes */
 .light {
-
-  user-select: none; /* Prevent text selection on touch */
-  touch-action: manipulation; /* Allow interaction on buttons */
+    user-select: none; /* Prevent text selection on touch */
+    touch-action: manipulation; /* Allow interaction like clicking/tapping */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,8 +94,9 @@ body {
     cursor: pointer;
 }
 
+/* Footer styling */
 .footer {
-    flex: 0 0 20lvh; /* Footer height using large viewport height for consistency */
+    flex: 0 0 20dvh; /* Footer height using effective dynamic viewport height for consistency */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,6 +123,7 @@ body {
     }
 }
 
+/* Gradient picker styling */
 #gradientPicker {
     width: 100%;
     height: 100%;
@@ -100,7 +133,12 @@ body {
     border: 2px solid black;
 }
 
+/* Color marker styling */
 #colorMarker {
+    user-select: none; /* Prevent text selection on touch */
+    touch-action: manipulation; /* Allow interaction like clicking/tapping */
+    
+
     position: absolute;
     width: 10px;
     height: 10px;
