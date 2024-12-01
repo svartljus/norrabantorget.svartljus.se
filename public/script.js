@@ -1,12 +1,3 @@
-var listenerTouchStart = function(e){/**/},
-    listenerTouchEnd = function(e){/**/},
-    listenerTouchCancel = function(e){/**/},
-    listenerTouchMove = function(e){/**/};
-
-window.removeEventListener('touchstart', listenerTouchStart, false);
-window.removeEventListener('touchend', listenerTouchEnd, false);
-window.removeEventListener('touchcancel', listenerTouchCancel, false);
-window.removeEventListener('touchmove', listenerTouchMove, false);
 
 document.addEventListener("DOMContentLoaded", () => {
     const gradientPicker = document.getElementById("gradientPicker");
