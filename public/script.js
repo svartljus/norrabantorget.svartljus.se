@@ -70,11 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Handle entering a light area
-    const handleEnter = (event) => {
-        const light = event.currentTarget;
+    const handleEnter = (light) => {
         const lightId = parseInt(light.dataset.id) - 1; // Convert dataset id to 0-indexed value
 
         if (audioStarted && currentNoteMapping.length === 10) {
+            const currentTime = Tone.now();
+
             light.style.setProperty(
                 "--light-bg-color",
                 `rgb(${activeColor.join(", ")})`
@@ -83,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const note = currentNoteMapping[lightId];
             if (note) {
                 console.log(`Playing note for light ${lightId + 1}: ${note}`);
-                playNote(note); // Use playNote() from audio.js
+                synth.triggerAttackRelease(note, "16n", currentTime);
             } else {
                 console.error(`No valid note found for light ${lightId + 1}`);
             }
