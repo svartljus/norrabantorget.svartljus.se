@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let activeColor = [255, 0, 0];
     let currentNoteMapping = [];
 
-
     // Send WebSocket message
     const sendWebSocketMessage = (type, id, color) => {
         const message = { type, id, color };
@@ -36,7 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Generate 10 unique notes using the Lydian scale for the lights
         currentNoteMapping = generateLydianScale(baseNote);
-        console.log("Generated Lydian Note Mapping for Lights:", currentNoteMapping);
+        console.log(
+            "Generated Lydian Note Mapping for Lights:",
+            currentNoteMapping
+        );
     };
 
     // Handle click on gradient picker
@@ -59,7 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Generate 10 unique notes using the Lydian scale for the lights
         currentNoteMapping = generateLydianScale(baseNote);
-        console.log("Generated Lydian Note Mapping for Lights:", currentNoteMapping);
+        console.log(
+            "Generated Lydian Note Mapping for Lights:",
+            currentNoteMapping
+        );
     });
 
     // Handle entering a light area
@@ -68,7 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const lightId = parseInt(light.dataset.id) - 1; // Convert dataset id to 0-indexed value
 
         if (audioStarted && currentNoteMapping.length === 10) {
-            light.style.setProperty("--light-bg-color", `rgb(${activeColor.join(", ")})`);
+            light.style.setProperty(
+                "--light-bg-color",
+                `rgb(${activeColor.join(", ")})`
+            );
             // Retrieve the note for this light from the current note mapping
             const note = currentNoteMapping[lightId];
             if (note) {
@@ -83,10 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         sendWebSocketMessage("enter", lightId + 1, activeColor);
     };
-
     // Handle exiting a light area
-    const handleExit = (event) => {
-        const light = event.currentTarget;
+    const handleExit = (light) => {
         const lightId = parseInt(light.dataset.id);
         light.style.setProperty("--light-bg-color", "transparent");
         sendWebSocketMessage("exit", lightId);
@@ -95,11 +101,40 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add event listeners to each light
     lights.forEach((light, index) => {
         light.dataset.id = index + 1;
-        light.addEventListener("mouseenter", handleEnter);
-        light.addEventListener("touchstart", handleEnter);
-        light.addEventListener("mouseleave", handleExit);
-        light.addEventListener("touchend", handleExit);
+        light.addEventListener("mouseenter", () => handleEnter(light));
+        light.addEventListener("mouseleave", () => handleExit(light));
+        light.addEventListener("touchstart", () => handleEnter(light));
+        light.addEventListener("touchend", () => handleExit(light));
     });
+
+    // Add touchmove event listener to track finger movement across lights
+    content.addEventListener("touchmove", (event) => {
+        const touch = event.touches[0];
+        const touchedElement = document.elementFromPoint(
+            touch.clientX,
+            touch.clientY
+        );
+
+        if (touchedElement && touchedElement.classList.contains("light")) {
+            if (activeLight !== touchedElement) {
+                // If the active light changes, handle enter for the new light
+                if (activeLight) {
+                    handleExit(activeLight);
+                }
+                activeLight = touchedElement;
+                handleEnter(activeLight);
+            }
+        } else {
+            // If touch moves away from lights
+            if (activeLight) {
+                handleExit(activeLight);
+                activeLight = null;
+            }
+        }
+    });
+
+    // Automatically select the center of the gradient picker when the page loads
+    selectCenterOfGradient();
 
     // Automatically select the center of the gradient picker when the page loads
     selectCenterOfGradient();
