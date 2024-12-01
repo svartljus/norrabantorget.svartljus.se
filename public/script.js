@@ -77,6 +77,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const handleEnter = (light) => {
         const lightId = parseInt(light.dataset.id) - 1; // Convert dataset id to 0-indexed value
 
+        activeLight = light;
+        light.style.setProperty(
+            "--light-bg-color",
+            `rgb(${activeColor.join(", ")})`
+        );
+
         if (audioStarted && currentNoteMapping.length === 10) {
             const currentTime = Tone.now();
 
@@ -98,12 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         sendWebSocketMessage("enter", lightId + 1, activeColor);
     };
-    // Handle exiting a light area
-    const handleExit = (light) => {
-        const lightId = parseInt(light.dataset.id);
-        light.style.setProperty("--light-bg-color", "transparent");
-        sendWebSocketMessage("exit", lightId);
-    };
 
     // Add event listeners to each light
     lights.forEach((light, index) => {
@@ -111,19 +111,19 @@ document.addEventListener("DOMContentLoaded", () => {
         // light.addEventListener("mouseenter", () => handleEnter(light));
         // light.addEventListener("mouseleave", () => handleExit(light));
         light.addEventListener("touchstart", () => handleEnter(light));
-        // light.addEventListener("touchend", () => handleExit(light));
     });
 
     // Add touchmove event listener to track finger movement across lights
     content.addEventListener("touchmove", (event) => {
         const touch = event.touches[0];
+
         const touchedElement = document.elementFromPoint(
             touch.clientX,
             touch.clientY
         );
-
         if (touchedElement && touchedElement.classList.contains("light")) {
             if (activeLight !== touchedElement) {
+
                 // If the active light changes, handle enter for the new light
                 // if (activeLight) {
                     // handleExit(activeLight);
@@ -133,10 +133,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } else {
             // If touch moves away from lights
-            //if (activeLight) {
+            if (activeLight) {
             //    handleExit(activeLight);
-            //    activeLight = null;
-            //}
+               activeLight = null;
+            }
         }
     });
 
