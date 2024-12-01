@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+/* Disable all touch gestures globally */
+html, body {
+    touch-action: none;
+    overflow: hidden; /* Prevent scrollbars */
+  }
+
+
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -36,6 +43,9 @@ body {
 
 /* Default styling for boxes */
 .light {
+
+  user-select: none; /* Prevent text selection on touch */
+  touch-action: manipulation; /* Allow interaction on buttons */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,6 +90,9 @@ body {
 }
 
 #gradientPicker {
+
+  user-select: none; /* Prevent text selection on touch */
+  touch-action: manipulation; /* Allow interaction on buttons */
     width: 100%;
     height: 100%;
     background: linear-gradient(to right, red, orange, yellow, green, cyan, blue, violet);
