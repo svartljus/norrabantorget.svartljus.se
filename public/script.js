@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add event listeners to each light
     lights.forEach((light, index) => {
         light.dataset.id = index + 1;
-        light.addEventListener("mouseenter", () => handleEnter(light));
+        // light.addEventListener("mouseenter", () => handleEnter(light));
         // light.addEventListener("mouseleave", () => handleExit(light));
         light.addEventListener("touchstart", () => handleEnter(light));
         // light.addEventListener("touchend", () => handleExit(light));

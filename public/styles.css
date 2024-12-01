@@ -153,7 +153,7 @@ body {
         align-items: center;
     }
     #gradientPicker {
-        background: linear-gradient(to bottom, red, orange, yellow, green, cyan, blue, violet); /* Change gradient to vertical */
+        background: linear-gradient(to top, red, orange, yellow, green, cyan, blue, violet); /* Change gradient to vertical */
     }
     .light {
         border-top: 1px solid black;
