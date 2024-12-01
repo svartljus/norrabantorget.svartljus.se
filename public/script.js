@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let activeColor = [255, 0, 0];
     let currentNoteMapping = [];
 
+    sendWebSocketMessage("ping");
+
     // Send WebSocket message
     const sendWebSocketMessage = (type, id, color) => {
         const message = { type, id, color };
