@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Select all light elements and color selector
     const lights = document.querySelectorAll(".light");
     const colorSelector = document.getElementById("colorSelector");
   
@@ -11,30 +10,26 @@ document.addEventListener("DOMContentLoaded", () => {
       activeColor = event.target.value;
     });
   
-    // Add event listeners to each light
+    // Function to handle entering a light (mouseenter or touchstart)
+    const handleEnter = (event) => {
+      const light = event.currentTarget;
+      console.log(`Entered light ${light.textContent}`);
+      light.style.setProperty("--light-bg-color", activeColor); // Update CSS variable
+    };
+  
+    // Function to handle exiting a light (mouseleave or touchend)
+    const handleExit = (event) => {
+      const light = event.currentTarget;
+      console.log(`Exited light ${light.textContent}`);
+      light.style.setProperty("--light-bg-color", "transparent"); // Reset CSS variable
+    };
+  
+    // Add event listeners for both touch and mouse
     lights.forEach((light) => {
-      // Mouseenter or Touchstart event
-      light.addEventListener("mouseenter", () => {
-        console.log(`Entered light ${light.textContent}`);
-        light.style.setProperty("--light-bg-color", activeColor); // Update CSS variable
-      });
-  
-      // Mouseleave or Touchend event
-      light.addEventListener("mouseleave", () => {
-        console.log(`Exited light ${light.textContent}`);
-        light.style.setProperty("--light-bg-color", "transparent"); // Reset CSS variable
-      });
-  
-      // For touch devices (add touchstart and touchend)
-      light.addEventListener("touchstart", () => {
-        console.log(`Entered light ${light.textContent}`);
-        light.style.setProperty("--light-bg-color", activeColor); // Update CSS variable
-      });
-  
-      light.addEventListener("touchend", () => {
-        console.log(`Exited light ${light.textContent}`);
-        light.style.setProperty("--light-bg-color", "transparent"); // Reset CSS variable
-      });
+      light.addEventListener("mouseenter", handleEnter);
+      light.addEventListener("touchstart", handleEnter);
+      light.addEventListener("mouseleave", handleExit);
+      light.addEventListener("touchend", handleExit);
     });
   });
   
