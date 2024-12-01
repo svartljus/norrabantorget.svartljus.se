@@ -71,7 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Generate the Lydian scale from the base note
         for (let i = 0; i < 10; i++) {
             const noteIndex = (baseNoteIndex + i) % scaleNotes.length;
-            const noteOctave = octave + Math.floor((baseNoteIndex + i) / scaleNotes.length);
+            const noteOctave =
+                octave + Math.floor((baseNoteIndex + i) / scaleNotes.length);
             notes.push(`${scaleNotes[noteIndex]}${noteOctave}`);
         }
         return notes;
@@ -119,7 +120,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Generate 10 unique notes using the Lydian scale for the lights
         currentNoteMapping = generateLydianScale(baseNote);
-        console.log("Generated Lydian Note Mapping for Lights:", currentNoteMapping);
+        console.log(
+            "Generated Lydian Note Mapping for Lights:",
+            currentNoteMapping
+        );
     };
 
     // Handle click on gradient picker
@@ -142,7 +146,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Generate 10 unique notes using the Lydian scale for the lights
         currentNoteMapping = generateLydianScale(baseNote);
-        console.log("Generated Lydian Note Mapping for Lights:", currentNoteMapping);
+        console.log(
+            "Generated Lydian Note Mapping for Lights:",
+            currentNoteMapping
+        );
     });
 
     // Handle entering a light area
@@ -153,15 +160,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (audioStarted && currentNoteMapping.length === 10) {
             const currentTime = Tone.now();
 
-            // Debounce: Ensure a minimum time gap between triggers
-            if (currentTime - lastTriggeredTime < 0.2) return; // Increase debounce time to avoid rapid triggering
-            lastTriggeredTime = currentTime;
-
+            light.style.setProperty(
+                "--light-bg-color",
+                `rgb(${activeColor.join(", ")})`
+            );
             // Retrieve the note for this light from the current note mapping
             const note = currentNoteMapping[lightId];
             if (note) {
                 console.log(`Playing note for light ${lightId + 1}: ${note}`);
-                synth.triggerAttackRelease(note, "8n", currentTime);
+                synth.triggerAttackRelease(note, "16n", currentTime);
             } else {
                 console.error(`No valid note found for light ${lightId + 1}`);
             }
@@ -169,10 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn("Audio not started or note mapping not ready.");
         }
 
-        light.style.setProperty(
-            "--light-bg-color",
-            `rgb(${activeColor.join(", ")})`
-        );
         sendWebSocketMessage("enter", lightId + 1, activeColor);
     };
 
