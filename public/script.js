@@ -2,9 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const gradientPicker = document.getElementById("gradientPicker");
     const colorMarker = document.getElementById("colorMarker");
     const lights = document.querySelectorAll(".light");
+    const content = document.querySelector(".content"); // Container of all lights
+
     const ws = new WebSocket("wss://sync.possan.codes/broadcast/dendrolux");
     let activeColor = [255, 0, 0];
     let currentNoteMapping = [];
+    let activeLight = null; // To keep track of the light that is currently active during touchmove
 
     // Send WebSocket message
     const sendWebSocketMessage = (type, id, color) => {
