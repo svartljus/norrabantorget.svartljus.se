@@ -6,8 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let activeColor = [255, 0, 0];
     let currentNoteMapping = [];
 
-    sendWebSocketMessage("ping");
-
     // Send WebSocket message
     const sendWebSocketMessage = (type, id, color) => {
         const message = { type, id, color };
@@ -16,6 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
             ws.send(JSON.stringify(message));
         }
     };
+
+    sendWebSocketMessage("ping");
 
     // Select the center of the gradient picker automatically
     const selectCenterOfGradient = () => {
