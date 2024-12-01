@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WLED Preset Trigger</title>
+</head>
+<body>
+  <h1>WLED Preset Control</h1>
+  <button id="trigger-preset">Trigger Custom Preset</button>
+
+  <script>
+    const wledIp = '192.168.1.102'; // Replace with your WLED IP address
+    const defaultPresetId = 21; // The ID of your default preset
+
+    document.getElementById('trigger-preset').addEventListener('click', () => {
+      // Trigger the custom preset
+      fetch(`http://${wledIp}/json/state`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          on: true,
+          bri: 128,
+          transition: 7,
+          mainseg: 0,
+          seg: [
+            {
+              id: 0,
+              start: 0,
+              stop: 294,
+              grp: 1,
+              spc: 0,
+              col: [[17, 0, 255], [0, 0, 0], [0, 0, 0]],
+              fx: 2,
+              sx: 20,
+              ix: 128,
+              pal: 0,
+            },
+            {
+              id: 1,
+              start: 294,
+              stop: 588,
+              grp: 1,
+              spc: 0,
+              col: [[17, 255, 0], [0, 0, 0], [0, 0, 0]],
+              fx: 2,
+              sx: 20,
+              ix: 128,
+              pal: 0,
+            },
+          ],
+        }),
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('Custom preset triggered!');
+          // Wait 2 seconds and switch to default preset
+          setTimeout(() => {
+            fetch(`http://${wledIp}/json/state`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                ps: defaultPresetId, // Switch to preset ID 21
+              }),
+            })
+            .then(response => {
+              if (response.ok) {
+                console.log('Switched to default preset!');
+              } else {
+                console.error('Failed to switch to default preset.');
+              }
+            })
+            .catch(error => console.error('Error:', error));
+          }, 2000); // 2000 ms = 2 seconds
+        } else {
+          console.error('Failed to trigger custom preset.');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>

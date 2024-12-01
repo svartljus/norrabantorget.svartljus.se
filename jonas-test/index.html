@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WLED Controller</title>
+</head>
+<body>
+  <h1>WLED Controller</h1>
+  <div id="controls">
+    <h2>Device Actions</h2>
+    <button onclick="initializeDevices()">Initialize Devices</button>
+    <button onclick="turnAllOn()">Turn All On</button>
+    <button onclick="turnAllOff()">Turn All Off</button>
+    <button onclick="setCustomPreset()">Set Custom Preset</button>
+    <button onclick="getAllStates()">Get All States</button>
+  </div>
+
+  <pre id="output"></pre>
+
+  <script type="module">
+    import WLED from './wled-library.js';
+
+    const output = document.getElementById('output');
+
+    function log(message) {
+      output.textContent += `${message}\n`;
+      output.scrollTop = output.scrollHeight; // Auto-scroll to the latest log
+    }
+
+    async function initializeDevices() {
+      log('Initializing devices...');
+      try {
+        await WLED.initializeDevices();
+        log('Devices initialized successfully with segments and presets.');
+      } catch (error) {
+        log(`Error during device initialization: ${error.message}`);
+      }
+    }
+
+    function turnAllOn() {
+      log('Turning all devices on...');
+      for (const device in WLED.devices) {
+        WLED.turnOn(device)
+          .then(() => log(`${device} turned on.`))
+          .catch(error => log(`Error turning on ${device}: ${error.message}`));
+      }
+    }
+
+    function turnAllOff() {
+      log('Turning all devices off...');
+      for (const device in WLED.devices) {
+        WLED.turnOff(device)
+          .then(() => log(`${device} turned off.`))
+          .catch(error => log(`Error turning off ${device}: ${error.message}`));
+      }
+    }
+
+    function setCustomPreset() {
+      const basePresetData = {
+        on: true,
+        bri: 128,
+      };
+
+      log('Setting custom preset on all devices...');
+      for (const device in WLED.devices) {
+        WLED.triggerPreset(device, basePresetData)
+          .then(() => log(`${device} custom preset applied.`))
+          .catch(error => log(`Error setting custom preset for ${device}: ${error.message}`));
+      }
+    }
+
+    function getAllStates() {
+      log('Fetching states of all devices...');
+      for (const device in WLED.devices) {
+        WLED.getCurrentState(device)
+          .then(state => log(`${device} state: ${JSON.stringify(state, null, 2)}`))
+          .catch(error => log(`Error fetching state for ${device}: ${error.message}`));
+      }
+    }
+
+    // Attach functions to the global window object
+    window.initializeDevices = initializeDevices;
+    window.turnAllOn = turnAllOn;
+    window.turnAllOff = turnAllOff;
+    window.setCustomPreset = setCustomPreset;
+    window.getAllStates = getAllStates;
+  </script>
+</body>
+</html>
