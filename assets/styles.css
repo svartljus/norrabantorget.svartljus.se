@@ -92,8 +92,8 @@ body {
 .light:after {
     content:attr(data-id);
     display:block;
-    width: 7dvw;
-    line-height: 7dvw;
+    width: max(8dvh, 8dvw);
+    line-height: max(8dvh, 8dvw);
     text-align:center;
     border: 1px solid white;
     border-radius: 50%;
