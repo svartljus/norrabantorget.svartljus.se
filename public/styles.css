@@ -9,7 +9,7 @@
 html, body {
     height: 100%;
     overflow: hidden; /* Prevent unnecessary scrollbars */
-    xtouch-action: none; /* Disable default browser gestures globally */
+    touch-action: none; /* Disable default browser gestures globally */
     font-family: Arial, sans-serif;
 }
 

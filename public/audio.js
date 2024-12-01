@@ -4,14 +4,10 @@ let synth = null;
 const startScreen = document.getElementById("startScreen");
 const startButton = document.getElementById("startButton");
 
-startButton.addEventListener("click", handleStart);
-startButton.addEventListener("touchstart", handleStart);
-
-const handleStart = () => {
-    alert("");
+startButton.addEventListener("click", function(){
     startAudioContext();
     startScreen.remove();
-}
+});
 
 const startAudioContext = () => {
     if (!audioStarted) {
