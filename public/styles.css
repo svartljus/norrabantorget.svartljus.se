@@ -25,6 +25,7 @@ html, body {
     justify-content: center;
     align-items: center;
     z-index: 1000; /* Ensure it stays above everything else */
+    touch-action: auto; /* Allow interactions like clicking/tapping */
 }
 
 .start-button {
