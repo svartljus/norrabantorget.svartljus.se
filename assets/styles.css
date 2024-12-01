@@ -142,7 +142,6 @@ body {
         flex: 3;
         grid-template-rows: repeat(10, 1fr);
         grid-template-columns: none;
-        border-right: 2px solid #333; /* Optional: Add a border to visually separate content and footer */
     }
     .footer {
         flex: 1; /* Footer takes less space compared to content */
@@ -155,8 +154,8 @@ body {
     #gradientPicker {
         background: linear-gradient(to top, red, orange, yellow, green, cyan, blue, violet); /* Change gradient to vertical */
     }
-    .light {
-        border-top: 1px solid black;
+    .light:not(:first-of-type) {
+        border-bottom: 1px solid black;
     }
     .light[data-id="1"] { order: 10; }
     .light[data-id="2"] { order: 9; }
