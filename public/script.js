@@ -80,10 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (audioStarted && currentNoteMapping.length === 10) {
             const currentTime = Tone.now();
 
-            light.style.setProperty(
-                "--light-bg-color",
-                `rgb(${activeColor.join(", ")})`
-            );
             // Retrieve the note for this light from the current note mapping
             const note = currentNoteMapping[lightId];
             if (note) {
@@ -114,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         light.dataset.id = index + 1;
         light.addEventListener("mouseenter", () => handleEnter(light));
         // light.addEventListener("mouseleave", () => handleExit(light));
-        // light.addEventListener("touchstart", () => handleEnter(light));
+        light.addEventListener("touchstart", () => handleEnter(light));
         // light.addEventListener("touchend", () => handleExit(light));
     });
 

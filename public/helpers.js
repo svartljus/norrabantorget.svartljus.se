@@ -89,7 +89,7 @@ const assignNotesToElements = (baseNote) => {
     elements.forEach((element, index) => {
         const note = reversedScale[index % reversedScale.length];
         element.dataset.note = note; // Assign the note to the element
-        element.addEventListener("click", () => playNote(note)); // Play note on click
+        // element.addEventListener("click", () => playNote(note)); // Play note on click
     });
 };
 // Example of how to call the function with a base note
