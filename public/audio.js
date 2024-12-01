@@ -14,6 +14,7 @@ const startAudioContext = () => {
         synth = new Tone.Synth().toDestination();
         Tone.start().then(() => {
             console.log("AudioContext started");
+            alert("Audio context started.");
             audioStarted = true;
         });
     }
