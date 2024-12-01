@@ -96,6 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn("Audio not started or note mapping not ready.");
         }
 
+        setTimeout(function(){
+            light.style.setProperty("--light-bg-color", "transparent");
+        },300);
+
         sendWebSocketMessage("enter", lightId + 1, activeColor);
     };
     // Handle exiting a light area
@@ -109,9 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
     lights.forEach((light, index) => {
         light.dataset.id = index + 1;
         light.addEventListener("mouseenter", () => handleEnter(light));
-        light.addEventListener("mouseleave", () => handleExit(light));
-        light.addEventListener("touchstart", () => handleEnter(light));
-        light.addEventListener("touchend", () => handleExit(light));
+        // light.addEventListener("mouseleave", () => handleExit(light));
+        // light.addEventListener("touchstart", () => handleEnter(light));
+        // light.addEventListener("touchend", () => handleExit(light));
     });
 
     // Add touchmove event listener to track finger movement across lights
@@ -125,18 +129,18 @@ document.addEventListener("DOMContentLoaded", () => {
         if (touchedElement && touchedElement.classList.contains("light")) {
             if (activeLight !== touchedElement) {
                 // If the active light changes, handle enter for the new light
-                if (activeLight) {
-                    handleExit(activeLight);
-                }
+                // if (activeLight) {
+                    // handleExit(activeLight);
+                // }
                 activeLight = touchedElement;
                 handleEnter(activeLight);
             }
         } else {
             // If touch moves away from lights
-            if (activeLight) {
-                handleExit(activeLight);
-                activeLight = null;
-            }
+            //if (activeLight) {
+            //    handleExit(activeLight);
+            //    activeLight = null;
+            //}
         }
     });
 
