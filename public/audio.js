@@ -5,9 +5,9 @@ const startScreen = document.getElementById("startScreen");
 const startButton = document.getElementById("startButton");
 
 startButton.addEventListener("click", handleStart);
-startButton.addEventListener("touchstart", handleStart);
 
-const handleStart = () => {
+function handleStart(){
+
     alert("");
     startAudioContext();
     startScreen.remove();
