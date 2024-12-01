@@ -181,8 +181,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle exiting a light area
     const handleExit = (event) => {
-        const light = event.currentTarget;
-        const lightId = light.dataset.id || light.textContent.trim();
+        const light = event.currentTarget; 
+        const lightId = parseInt(light.dataset.id); // Convert dataset id to 0-indexed value
         light.style.setProperty("--light-bg-color", "transparent");
         sendWebSocketMessage("exit", lightId);
     };
