@@ -5,6 +5,7 @@ const startScreen = document.getElementById("startScreen");
 const startButton = document.getElementById("startButton");
 
 startButton.addEventListener("click", () => {
+    alert("");
     startAudioContext();
     startScreen.remove();
 });
