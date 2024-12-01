@@ -8,11 +8,11 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100svh; /* Use effective viewport height for better UX on mobile */
 }
 
 .header {
-    flex: 0 0 10%;
+    flex: 0 0 10lvh; /* Use 10% of the large viewport height */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,7 +26,7 @@ body {
 }
 
 .content {
-    flex: 0 0 70%;
+    flex: 1; /* Allow the content to fill the remaining space */
     display: grid;
     grid-template-rows: repeat(10, 1fr);
     gap: 10px;
@@ -44,7 +44,7 @@ body {
     color: black;
     font-size: 1.2rem;
     border-radius: 4px;
-    /* transition: background-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1); */
+    transition: background-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1);
 }
 
 .light:hover {
@@ -52,7 +52,7 @@ body {
 }
 
 .footer {
-    flex: 0 0 20%; /* Footer height */
+    flex: 0 0 20lvh; /* Footer height using large viewport height for consistency */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,9 +86,9 @@ body {
     position: relative;
     cursor: crosshair;
     border: 2px solid black;
-  }
-  
-  #colorMarker {
+}
+
+#colorMarker {
     position: absolute;
     width: 10px;
     height: 10px;
@@ -98,5 +98,4 @@ body {
     pointer-events: none; /* Ensure it doesn't interfere with clicking */
     transform: translate(-50%, -50%); /* Center the marker at the click point */
     display: none; /* Hidden initially */
-  }
-  
+}
