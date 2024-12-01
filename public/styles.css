@@ -72,7 +72,6 @@ body {
     background-color: #f9f9f9;
     user-select: none; /* Prevent text selection on touch */
     touch-action: manipulation; /* Allow necessary interactions */
-    direction: ltr;
 }
 
 /* Light box styling */
