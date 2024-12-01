@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // WebSocket Messaging
     const sendWebSocketMessage = (type, id, color) => {
-        console.log('WebSocket Message:', { type, id, color });
+        console.log("WebSocket Message:", { type, id, color });
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify({ type, id, color }));
         }
@@ -26,7 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Gradient Picker Handlers
     const handleGradientClick = (event) => {
-        const { x, y, rgbString } = getClickPositionAndColor(event, gradientPicker);
+        const { x, y, rgbString } = getClickPositionAndColor(
+            event,
+            gradientPicker
+        );
         updateActiveColor(rgbString, x, y);
     };
 
@@ -54,14 +57,28 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Light Interaction Handlers
-    const handleEnter = (light) => {
+    const handleEnter = (light, event = undefined) => {
+        if (event !== undefined){
+            event.preventDefault();
+        }
         const lightId = parseInt(light.dataset.id) - 1;
+        console.log(lightId, currentNoteMapping);
         setLightBackgroundColor(light, activeColor);
 
         if (audioStarted && currentNoteMapping.length === 10) {
             const note = currentNoteMapping[lightId];
-            if (note) {
-                synth.triggerAttackRelease(note, "16n", Tone.now());
+            if (note && synth) {
+                try {
+                    if (typeof note === "string" && note !== "undefined") {
+                        synth.triggerAttackRelease(note, "16n", Tone.now());
+                    } else {
+                        console.error("Invalid note value", { note });
+                    }
+                } catch (error) {
+                    console.error("Error triggering note", { note, error });
+                }
+            } else {
+                console.error("Note or synth is undefined", { note, synth });
             }
         }
 
@@ -74,7 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const handleTouchMove = (event) => {
         const touch = event.touches[0];
-        const touchedElement = document.elementFromPoint(touch.clientX, touch.clientY);
+        const touchedElement = document.elementFromPoint(
+            touch.clientX,
+            touch.clientY
+        );
 
         if (touchedElement && touchedElement.classList.contains("light")) {
             if (activeLight !== touchedElement) {
@@ -90,11 +110,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const startAudio = () => {
         if (!audioStarted) {
             synth = new Tone.Synth().toDestination();
-            Tone.start().then(() => {
-                audioStarted = true;
-                console.log("AudioContext started");
-                startScreen.remove();
-            });
+            Tone.start()
+                .then(() => {
+                    audioStarted = true;
+                    console.log("AudioContext started");
+                    startScreen.remove();
+                })
+                .catch((err) => {
+                    console.error("Error starting AudioContext", err);
+                });
         }
     };
 
@@ -102,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const rgbToArray = (rgbString) => rgbString.match(/\d+/g).map(Number);
 
     const getBaseNoteFromPosition = (x, width) => {
-        const scale = ["C", "D", "E", "F", "G", "A", "B"];
+        const scale = ["C", "D", "E", "F#", "G", "A", "B"];
         const octaveRange = [3, 4, 5];
         const totalNotes = scale.length * octaveRange.length;
         const noteIndex = Math.floor((x / width) * totalNotes);
@@ -117,10 +141,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const octave = parseInt(baseNote.slice(-1));
 
         let notes = [];
-        const baseNoteIndex = scaleNotes.indexOf(baseNoteName);
+        let baseNoteIndex = scaleNotes.indexOf(baseNoteName);
+
+        if (baseNoteIndex === -1) {
+            console.error("Invalid base note provided", { baseNote });
+            baseNoteIndex = scaleNotes.indexOf("C"); // Default to 'C' if the base note is invalid
+        }
+
         for (let i = 0; i < 10; i++) {
             const noteIndex = (baseNoteIndex + i) % scaleNotes.length;
-            const noteOctave = octave + Math.floor((baseNoteIndex + i) / scaleNotes.length);
+            const noteOctave =
+                octave + Math.floor((baseNoteIndex + i) / scaleNotes.length);
             notes.push(`${scaleNotes[noteIndex]}${noteOctave}`);
         }
         return notes;
@@ -138,8 +169,12 @@ document.addEventListener("DOMContentLoaded", () => {
             ? ctx.createLinearGradient(0, canvas.height, 0, 0)
             : ctx.createLinearGradient(0, 0, canvas.width, 0);
 
-        const colors = style.backgroundImage.match(/#[0-9a-f]{3,6}|rgb[a]?\([^)]+\)/g) || [];
-        colors.forEach((color, i) => gradient.addColorStop(i / (colors.length - 1), color));
+        const colors =
+            style.backgroundImage.match(/#[0-9a-f]{3,6}|rgb[a]?\([^)]+\)/g) ||
+            [];
+        colors.forEach((color, i) =>
+            gradient.addColorStop(i / (colors.length - 1), color)
+        );
 
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -168,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const resetLightBackgroundColor = (light) => {
-        light.style.setProperty("--light-bg-color", "transparent");
+        light.style.setProperty("--light-bg-color", "#111");
     };
 
     // Initial Setup and Event Listeners
@@ -177,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gradientPicker.addEventListener("touchmove", handleGradientTouchMove);
     lights.forEach((light, index) => {
         light.dataset.id = index + 1;
-        light.addEventListener("touchstart", () => handleEnter(light));
+        light.addEventListener("touchstart", (event) => handleEnter(light, event));
     });
     content.addEventListener("touchmove", handleTouchMove);
     startButton.addEventListener("click", startAudio);

@@ -12,6 +12,7 @@ body {
     overflow: hidden; /* Prevent unnecessary scrollbars */
     touch-action: none; /* Disable default browser gestures globally */
     font-family: Arial, sans-serif;
+    background-color: #111;
 }
 
 /* Start screen styling */
@@ -76,12 +77,27 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--light-bg-color, transparent); /* CSS variable for dynamic color */
-    color: black;
+    background-color: var(
+        --light-bg-color,
+        transparent
+    ); /* CSS variable for dynamic color */
+    color: white;
+    border-color: var(--light-bg-color, transparent);
     font-size: 1.2rem;
-    transition: background-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+    transition: background-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1), border-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1);
     user-select: none; /* Prevent text selection */
     touch-action: manipulation; /* Allow interactions like clicking/tapping */
+}
+
+.light:after {
+    content:attr(data-id);
+    display:block;
+    width: 7dvw;
+    line-height: 7dvw;
+    text-align:center;
+    border: 1px solid white;
+    border-radius: 50%;
+
 }
 
 /* Footer styling */
@@ -97,7 +113,16 @@ body {
 #gradientPicker {
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, red, orange, yellow, green, cyan, blue, violet);
+    background: linear-gradient(
+        to right,
+        red,
+        orange,
+        yellow,
+        green,
+        cyan,
+        blue,
+        violet
+    );
     position: relative;
 }
 
@@ -126,7 +151,7 @@ body {
         grid-template-columns: repeat(10, 1fr);
     }
     .light {
-        border-right: 1px solid black;
+        border-right-width: 1px;
     }
     .footer {
         flex: 0 0 20dvh; /* Footer height in landscape mode */
@@ -152,19 +177,48 @@ body {
         align-items: center;
     }
     #gradientPicker {
-        background: linear-gradient(to top, red, orange, yellow, green, cyan, blue, violet); /* Change gradient to vertical */
+        background: linear-gradient(
+            to top,
+            red,
+            orange,
+            yellow,
+            green,
+            cyan,
+            blue,
+            violet
+        ); /* Change gradient to vertical */
     }
     .light:not(:first-of-type) {
-        border-bottom: 1px solid black;
+        border-bottom-width: 1px;
     }
-    .light[data-id="1"] { order: 10; }
-    .light[data-id="2"] { order: 9; }
-    .light[data-id="3"] { order: 8; }
-    .light[data-id="4"] { order: 7; }
-    .light[data-id="5"] { order: 6; }
-    .light[data-id="6"] { order: 5; }
-    .light[data-id="7"] { order: 4; }
-    .light[data-id="8"] { order: 3; }
-    .light[data-id="9"] { order: 2; }
-    .light[data-id="10"] { order: 1; }
+    .light[data-id="1"] {
+        order: 10;
+    }
+    .light[data-id="2"] {
+        order: 9;
+    }
+    .light[data-id="3"] {
+        order: 8;
+    }
+    .light[data-id="4"] {
+        order: 7;
+    }
+    .light[data-id="5"] {
+        order: 6;
+    }
+    .light[data-id="6"] {
+        order: 5;
+    }
+    .light[data-id="7"] {
+        order: 4;
+    }
+    .light[data-id="8"] {
+        order: 3;
+    }
+    .light[data-id="9"] {
+        order: 2;
+    }
+    .light[data-id="10"] {
+        order: 1;
+    }
 }
