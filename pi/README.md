@@ -19,8 +19,15 @@ From your machine, copy over the scripts:
     scp loop.sh dendro@raspberry-ip:dendro/
     scp color-mixer.service dendro@raspberry-ip:dendro/color-mixer.script
 
+    scp ngrok.serice dendro@raspberry-ip:
+
 On the pi, run:
 
+    curl -OJ "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-arm64.tgz"
+    tar -xvzf ngrok-v3-stable-linux-arm64.tgz
+    sudo cp ngrok /usr/local/bin/
+    sudo cp ngrok.service /etc/systemd/system/ngrioj.service
+    sudo systemctl enable ngrok.service
     cd dendro
     apt-get install nodejs npm
     npm i
@@ -35,5 +42,3 @@ To see the service logs on the pi, run:
     journalctl -u color-mixer  -f
 
 To make changes to the code you need to re-enable read/write mode on the file system, to do so disable overlay fs in raspi-config and reboot, remember to re-enable it afterwards to make the sd card happier.
-
-
