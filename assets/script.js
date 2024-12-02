@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const content = document.querySelector(".content");
     const startScreen = document.getElementById("startScreen");
     const startButton = document.getElementById("startButton");
+    const randomColorToggle = document.getElementById("randomColorToggle");
 
     // State Variables
     const ws = new WebSocket("wss://sync.possan.codes/broadcast/dendrolux");
@@ -66,11 +67,30 @@ document.addEventListener("DOMContentLoaded", () => {
         currentNoteMapping = generateLydianScale(baseNote);
     };
 
+    // Utility to Randomize Marker Position and Color
+    const randomizeColorMarker = () => {
+        const rect = gradientPicker.getBoundingClientRect();
+        const randomX = Math.random() * rect.width;
+        const randomY = Math.random() * rect.height;
+        const randomColor = getColorAtPosition(
+            randomX,
+            randomY,
+            gradientPicker
+        );
+        updateActiveColor(randomColor, randomX, randomY);
+    };
+
     // Light Interaction Handlers
     const handleEnter = (light, event = undefined) => {
         if (event !== undefined) {
             event.preventDefault();
         }
+
+        // If random color toggle is checked, randomize the marker
+        if (randomColorToggle.checked) {
+            randomizeColorMarker();
+        }
+
         const lightId = parseInt(light.dataset.id) - 1;
         console.log(lightId, currentNoteMapping);
         setLightBackgroundColor(light, activeColor);
@@ -255,21 +275,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.addEventListener("keydown", (event) => {
         const keyToLightMap = {
-            "1": 1,
-            "2": 2,
-            "3": 3,
-            "4": 4,
-            "5": 5,
-            "6": 6,
-            "7": 7,
-            "8": 8,
-            "9": 9,
-            "0": 10,
+            1: 1,
+            2: 2,
+            3: 3,
+            4: 4,
+            5: 5,
+            6: 6,
+            7: 7,
+            8: 8,
+            9: 9,
+            0: 10,
         };
-    
+
         const lightId = keyToLightMap[event.key];
         if (lightId !== undefined) {
-            const light = document.querySelector(`.light[data-id="${lightId}"]`);
+            const light = document.querySelector(
+                `.light[data-id="${lightId}"]`
+            );
             if (light) {
                 handleEnter(light);
             } else {
@@ -278,7 +300,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    
     content.addEventListener("touchmove", handleTouchMove);
     startButton.addEventListener("click", startAudio);
 });
