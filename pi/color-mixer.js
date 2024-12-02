@@ -9,14 +9,17 @@ const RINGS = [
   {
     index: 0,
     delay: 200,
-    ip: "192.168.10.102",
+    ip: "192.168.10.103",
   },
   {
     index: 0,
     delay: 400,
-    ip: "192.168.10.103",
+    ip: "192.168.10.100",
   },
 ];
+
+const COLOR_PRESET_SPEC =
+  '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":294,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[255,0,0],[0,0,255]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":294,"stop":588,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[0,0,0],[0,0,0]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
 
 const IDLE_PRESET_SPEC =
   '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":294,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,49,8],[255,99,51],[0,0,0]],"fx":2,"sx":19,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":1},{"id":1,"start":294,"stop":588,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,49,8],[255,99,51],[0,0,0]],"fx":2,"sx":19,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":1},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
@@ -25,9 +28,9 @@ const IDLE_PRESET = 10;
 const COLOR_PRESET = 11;
 const RELAY_SERVER_URL = "wss://sync.possan.codes/broadcast/dendrolux";
 const SLOW_FADE_TIME = 2.0;
-const QUICK_FADE_TIME = 0.2;
+const QUICK_FADE_TIME = 0.5;
 const LIVE_TIMEOUT_TIME = 15000;
-const COLOR_SUSTAIN_TIME = 500;
+const COLOR_SUSTAIN_TIME = 700;
 
 let lightTargetState = "idle";
 let lightCurrentState = "off";
@@ -102,7 +105,7 @@ let buttonEvents = [];
 function _sendStateToRing(index, stateUpdate) {
   const req = JSON.stringify(stateUpdate);
   const ring = RINGS[index];
-  console.log("sending state to ring", index, ring?.ip, req);
+  console.log("> sending state to ring", index, ring?.ip, req);
   if (!ring) {
     return;
   }
@@ -127,8 +130,10 @@ function configureRingSettings(index, settingsobj) {}
 
 function configureRingPalette(index, paletteindex, paletteobj) {}
 
-function configureRingPreset(index, presetindex, presetobj) {
-  console.log;
+async function configureRingPreset(index, presetindex, presetobj) {
+  const payload = JSON.parse(presetobj);
+  payload.psave = presetindex;
+  return _sendStateToRing(index, payload);
 }
 
 function _setRingPreset(index, presetIndex) {
@@ -210,25 +215,27 @@ function handleRelayMessage(msg) {
   }
 }
 
-console.log("Dendrolux ring server");
+function connectToRelay() {
+  const ws = new WebSocket(RELAY_SERVER_URL);
 
-const ws = new WebSocket(RELAY_SERVER_URL);
+  ws.on("error", function error(e) {
+    console.error("connection error", e);
+    // reconnect?
+  });
 
-ws.on("error", function error(e) {
-  console.error("connection error", e);
-});
+  ws.on("close", function error(e) {
+    console.log("connection closed", e);
+    // reconnect?
+  });
 
-ws.on("close", function error(e) {
-  console.log("connection closed", e);
-});
+  ws.on("open", function open() {
+    console.log("connection opened.");
+  });
 
-ws.on("open", function open() {
-  console.log("connection opened.");
-});
-
-ws.on("message", function message(data) {
-  handleRelayMessage(JSON.parse(data));
-});
+  ws.on("message", function message(data) {
+    handleRelayMessage(JSON.parse(data));
+  });
+}
 
 function evictOldNodes() {
   for (const id of Object.keys(connectionButtonState)) {
@@ -241,14 +248,14 @@ function evictOldNodes() {
 }
 
 function changeLightTargetStateFromConnections() {
-//   if (
-//     lightTargetState === "idle" &&
-//     (Object.keys(connectionButtonState).length > 0 || buttonEvents.length > 0)
-//   ) {
-//     lightTargetState = "live"; // should go to live mode
-//     console.log("Lights should go to live mode now.");
-//     exitLiveDeadline = new Date().getTime() + LIVE_TIMEOUT_TIME;
-//   }
+  //   if (
+  //     lightTargetState === "idle" &&
+  //     (Object.keys(connectionButtonState).length > 0 || buttonEvents.length > 0)
+  //   ) {
+  //     lightTargetState = "live"; // should go to live mode
+  //     console.log("Lights should go to live mode now.");
+  //     exitLiveDeadline = new Date().getTime() + LIVE_TIMEOUT_TIME;
+  //   }
 
   if (lightTargetState === "live" && new Date().getTime() > exitLiveDeadline) {
     console.log("Lights should be idle now.");
@@ -412,17 +419,68 @@ function queueUpdateRingState() {
   }, 100);
 }
 
-queueUpdateRingState();
+async function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-setTimeout(() => {
+async function init() {
+  // configure all presets
+
+  console.log("Dendrolux ring server");
+  console.log("");
+
+  console.log("Configuring rings...");
+  for (var k = 0; k < RINGS.length; k++) {
+    // TODO: configure leds?
+    await configureRingPreset(k, IDLE_PRESET, IDLE_PRESET_SPEC);
+    await configureRingPreset(k, COLOR_PRESET, COLOR_PRESET_SPEC);
+    await setRingModeColor(k);
+  }
+  console.log("Done.");
+  console.log("");
+
+  await delay(2000);
+
+  console.log("Running color test.");
+  for (var k = 0; k < RINGS.length; k++) {
+    await setRingColor(k, 255, 0, 0, 1);
+  }
+  await delay(1000);
+  for (var k = 0; k < RINGS.length; k++) {
+    await setRingColor(k, 0, 255, 0, 1);
+  }
+  await delay(1000);
+  for (var k = 0; k < RINGS.length; k++) {
+    await setRingColor(k, 0, 0, 255, 1);
+  }
+  await delay(1000);
+  for (var k = 0; k < RINGS.length; k++) {
+    await setRingColor(k, 0, 0, 0, 1);
+  }
+  console.log("Done.");
+
+  await delay(1000);
+
+  console.log("Starting rings idle mode.");
+  for (var k = 0; k < RINGS.length; k++) {
+    await setRingModeIdle(k);
+  }
+
+  await delay(3000);
+
+  console.log("Start main loop.");
+  queueUpdateRingState();
+
+  console.log("Trigger simulated events.");
+
   handleRelayMessage({
     _id: "dummy1",
     type: "ping",
     id: "1",
   });
-}, 2000);
 
-setTimeout(() => {
+  await delay(2000);
+
   handleRelayMessage({
     _id: "dummy1",
     type: "enter",
@@ -436,25 +494,19 @@ setTimeout(() => {
     id: "2",
     color: [255, 0, 0],
   });
-}, 4000);
+  await delay(2000);
 
-setTimeout(() => {
   handleRelayMessage({
     _id: "dummy3",
     type: "enter",
     id: "1",
     color: [0, 255, 0],
   });
-}, 6000);
 
-// setTimeout(() => {
-//   handleRelayMessage({ _id: "dummy1", type: "exit", id: "1" });
-// }, 8000);
+  await delay(2000);
 
-// setTimeout(() => {
-//   handleRelayMessage({ _id: "dummy3", type: "exit", id: "1" });
-// }, 10000);
+  console.log("Connect to messaging server.");
+  connectToRelay();
+}
 
-// setTimeout(() => {
-//   handleRelayMessage({ _id: "dummy2", type: "exit", id: "1" });
-// }, 12000);
+init();
