@@ -1,0 +1,15 @@
+[Unit]
+Description=Dendrolux color mixer
+After=multi-user.target
+Requires=network.target
+
+[Service]
+Type=idle
+User=dendro
+WorkingDirectory=/home/dendro/dendro
+ExecStart=/home/dendro/dendro/loop.sh
+Restart=always
+RestartSec=4
+
+[Install]
+WantedBy=multi-user.target

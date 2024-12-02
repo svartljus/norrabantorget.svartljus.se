@@ -1,9 +1,7 @@
 #!/bin/sh
 
 while [ 1 ]; do
-
-    print "Starting script..."
+    echo "Starting script..."
     node color-mixer.js
     sleep 2
-
 done
