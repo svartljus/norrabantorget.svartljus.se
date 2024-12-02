@@ -263,3 +263,16 @@ body {
         stroke-dashoffset: 2000;
     }
 }
+
+#randomColorToggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 2rem;
+    height: 2rem;
+}
+
+#randomColorToggle label {
+    display:block;
+
+}
