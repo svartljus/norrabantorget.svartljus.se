@@ -35,6 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const handleGradientTouchMove = (event) => {
+        event.preventDefault(); // Prevent default scrolling behavior
+    
         const touch = event.touches[0];
         const rect = gradientPicker.getBoundingClientRect();
         const x = Math.max(0, Math.min(touch.clientX - rect.left, rect.width));
@@ -80,7 +82,47 @@ document.addEventListener("DOMContentLoaded", () => {
         updateActiveColor(randomColor, randomX, randomY);
     };
 
-    // Light Interaction Handlers
+    const adjustColorBrightness = (color, percentage) => {
+        return color.map((component) =>
+            Math.min(
+                255,
+                Math.max(
+                    0,
+                    component +
+                        Math.round((255 - component) * (percentage / 100))
+                )
+            )
+        );
+    };
+
+    const setLightColors = () => {
+        const baseColor = activeColor;
+        const lightsArray = Array.from(lights);
+
+        lightsArray.forEach((light, index) => {
+            let adjustedColor;
+            if (index < 4) {
+                // Lights 1-4: lighter
+                adjustedColor = adjustColorBrightness(
+                    baseColor,
+                    10 * (4 - index)
+                );
+            } else if (index === 4 || index === 5) {
+                // Lights 5 and 6: base color
+                adjustedColor = baseColor;
+            } else {
+                // Lights 7-10: darker
+                adjustedColor = adjustColorBrightness(
+                    baseColor,
+                    -10 * (index - 5)
+                );
+            }
+
+            setLightBackgroundColor(light, adjustedColor);
+        });
+    };
+
+    // Modify the `handleEnter` function to call `setLightColors`
     const handleEnter = (light, event = undefined) => {
         if (event !== undefined) {
             event.preventDefault();
@@ -92,8 +134,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const lightId = parseInt(light.dataset.id) - 1;
-        console.log(lightId, currentNoteMapping);
-        setLightBackgroundColor(light, activeColor);
+
+        // Determine the adjusted color for the current light
+        let adjustedColor;
+        if (lightId < 4) {
+            // Lights 1-4: lighter
+            adjustedColor = adjustColorBrightness(
+                activeColor,
+                10 * (4 - lightId)
+            );
+        } else if (lightId === 4 || lightId === 5) {
+            // Lights 5 and 6: base color
+            adjustedColor = activeColor;
+        } else {
+            // Lights 7-10: darker
+            adjustedColor = adjustColorBrightness(
+                activeColor,
+                -10 * (lightId - 5)
+            );
+        }
+
+        // Apply the adjusted color to the current light
+        setLightBackgroundColor(light, adjustedColor);
 
         if (audioStarted && currentNoteMapping.length === 10) {
             const note = currentNoteMapping[lightId];
@@ -116,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
             resetLightBackgroundColor(light);
         }, 300);
 
-        sendWebSocketMessage("enter", lightId + 1, activeColor);
+        sendWebSocketMessage("enter", lightId + 1, adjustedColor);
     };
 
     const handleTouchMove = (event) => {
