@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Light Interaction Handlers
     const handleEnter = (light, event = undefined) => {
-        if (event !== undefined){
+        if (event !== undefined) {
             event.preventDefault();
         }
         const lightId = parseInt(light.dataset.id) - 1;
@@ -200,7 +200,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const setLightBackgroundColor = (light, color) => {
         light.style.setProperty("--light-bg-color", `rgb(${color.join(", ")})`);
-        light.style.setProperty("--light-border-color", `rgb(${color.join(", ")})`);
+        light.style.setProperty(
+            "--light-border-color",
+            `rgb(${color.join(", ")})`
+        );
     };
 
     const resetLightBackgroundColor = (light) => {
@@ -214,7 +217,19 @@ document.addEventListener("DOMContentLoaded", () => {
     gradientPicker.addEventListener("touchmove", handleGradientTouchMove);
     lights.forEach((light, index) => {
         light.dataset.id = index + 1;
-        light.addEventListener("touchstart", (event) => handleEnter(light, event));
+        light.addEventListener("touchstart", (event) =>
+            handleEnter(light, event)
+        );
+
+        // Add mouseover event listener to handle drag and click events
+        light.addEventListener("mouseover", (event) => {
+            if (event.buttons === 1) {
+                handleEnter(light, event);
+            }
+        });
+        light.addEventListener("click", (event) =>
+            handleEnter(light, event)
+        );
     });
     content.addEventListener("touchmove", handleTouchMove);
     startButton.addEventListener("click", startAudio);
