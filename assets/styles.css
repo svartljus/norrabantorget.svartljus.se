@@ -12,7 +12,7 @@ body {
     overflow: hidden; /* Prevent unnecessary scrollbars */
     touch-action: none; /* Disable default browser gestures globally */
     font-family: Arial, sans-serif;
-    background-color: #111;
+    background-color: black;
 }
 
 /* Start screen styling */
@@ -84,20 +84,30 @@ body {
     color: white;
     border-color: var(--light-bg-color, transparent);
     font-size: 1.2rem;
-    transition: background-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1), border-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+    transition: background-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1),
+        border-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1);
     user-select: none; /* Prevent text selection */
     touch-action: manipulation; /* Allow interactions like clicking/tapping */
 }
 
+.light:before {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+}
+
 .light:after {
-    content:attr(data-id);
-    display:block;
+    content: attr(data-id);
     width: max(8dvh, 8dvw);
     line-height: max(8dvh, 8dvw);
-    text-align:center;
-    border: 1px solid white;
-    border-radius: 50%;
+    text-align: center;
+}
 
+.light:before,
+.light:after {
+    display: block;
+    border: 1px solid var(--light-border-color, white);
+    border-radius: 50%;
 }
 
 /* Footer styling */
@@ -150,6 +160,9 @@ body {
         grid-template-rows: none;
         grid-template-columns: repeat(10, 1fr);
     }
+    .light:before {
+        padding: 39vh;
+    }
     .light {
         border-right-width: 1px;
     }
@@ -187,6 +200,9 @@ body {
             blue,
             violet
         ); /* Change gradient to vertical */
+    }
+    .light:before {
+        padding: 39vw;
     }
     .light:not(:first-of-type) {
         border-bottom-width: 1px;

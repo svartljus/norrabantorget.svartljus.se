@@ -200,10 +200,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const setLightBackgroundColor = (light, color) => {
         light.style.setProperty("--light-bg-color", `rgb(${color.join(", ")})`);
+        light.style.setProperty("--light-border-color", `rgb(${color.join(", ")})`);
     };
 
     const resetLightBackgroundColor = (light) => {
-        light.style.setProperty("--light-bg-color", "#111");
+        light.style.setProperty("--light-bg-color", "black");
+        // light.style.setProperty("--light-border-color", "white");
     };
 
     // Initial Setup and Event Listeners
