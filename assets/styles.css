@@ -81,7 +81,7 @@ body {
         --light-bg-color,
         transparent
     ); /* CSS variable for dynamic color */
-    color: white;
+    color: var(--light-border-color, white);;
     border-color: var(--light-bg-color, transparent);
     font-size: 1.2rem;
     transition: background-color 1.5s cubic-bezier(0.1, 0.9, 0.2, 1),
