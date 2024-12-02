@@ -2,17 +2,31 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
         <title>Dendrolux Norra Bantorget</title>
         <link rel="stylesheet" href="assets/styles.css" />
-        <script src="https://unpkg.com/tone"></script>
-        <script defer src="assets/script.js?v=1"></script>
+        <script defer src="assets/tone.js"></script>
+        <script defer src="assets/script.js"></script>
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-SY1NC439T1"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-SY1NC439T1");
+        </script>
     </head>
     <body>
         <div id="startScreen" class="start-screen">
-            <button id="startButton" class="start-button">
-                Start Experience
-            </button>
+            <button id="startButton" class="start-button">Play</button>
         </div>
         <main class="content">
             <div class="light" data-id="1"></div>

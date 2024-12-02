@@ -167,7 +167,7 @@ body {
         border-right-width: 1px;
     }
     .footer {
-        flex: 0 0 20dvh; /* Footer height in landscape mode */
+        flex: 0 0 10dvh; /* Footer height in landscape mode */
     }
 }
 
@@ -182,8 +182,8 @@ body {
         grid-template-columns: none;
     }
     .footer {
-        flex: 1; /* Footer takes less space compared to content */
-        width: 20vw; /* Restrict width of the footer to fit neatly beside content */
+        flex: 0.5; /* Footer takes less space compared to content */
+        width: 10vw; /* Restrict width of the footer to fit neatly beside content */
         height: 100%; /* Stretch the footer to fit the height */
         display: flex;
         justify-content: center;
@@ -202,7 +202,7 @@ body {
         ); /* Change gradient to vertical */
     }
     .light:before {
-        padding: 36vw;
+        padding: 43vw;
     }
     .light:not(:first-of-type) {
         border-bottom-width: 1px;
@@ -236,5 +236,30 @@ body {
     }
     .light[data-id="10"] {
         order: 1;
+    }
+}
+
+/* rainbow */
+
+
+.rainbow-svg {
+    width: 20%;
+    height: auto;
+}
+
+.rainbow-path {
+    stroke: url(#rainbowGradient);
+    stroke-width: 16;
+    stroke-linecap: round;
+    fill: none;
+    animation: rainbowAnimation 5s linear infinite;
+}
+
+@keyframes rainbowAnimation {
+    0% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: 2000;
     }
 }

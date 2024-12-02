@@ -52,7 +52,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const updateActiveColor = (rgbString, x, y) => {
         activeColor = rgbToArray(rgbString);
         updateColorMarker(x, y, rgbString);
-        baseNote = getBaseNoteFromPosition(x, gradientPicker.offsetWidth);
+
+        const isPortrait = window.innerHeight > window.innerWidth;
+        if (isPortrait) {
+            baseNote = getBaseNoteFromPosition(
+                gradientPicker.offsetHeight - y,
+                gradientPicker.offsetHeight
+            );
+        } else {
+            baseNote = getBaseNoteFromPosition(x, gradientPicker.offsetWidth);
+        }
+
         currentNoteMapping = generateLydianScale(baseNote);
     };
 
@@ -129,7 +139,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const scale = ["C", "D", "E", "F#", "G", "A", "B"];
         const octaveRange = [3, 4, 5];
         const totalNotes = scale.length * octaveRange.length;
-        const noteIndex = Math.floor((x / width) * totalNotes);
+
+        if (width <= 0) {
+            console.error(
+                "Invalid width provided for gradient picker calculation"
+            );
+            return "C4"; // Fallback to a default note
+        }
+
+        const noteIndex = Math.max(
+            0,
+            Math.min(totalNotes - 1, Math.floor((x / width) * totalNotes))
+        );
         const note = scale[noteIndex % scale.length];
         const octave = octaveRange[Math.floor(noteIndex / scale.length)];
         return `${note}${octave}`;
@@ -145,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (baseNoteIndex === -1) {
             console.error("Invalid base note provided", { baseNote });
-            baseNoteIndex = scaleNotes.indexOf("C"); // Default to 'C' if the base note is invalid
+            baseNoteIndex = scaleNotes.indexOf("C4"); // Default to 'C' if the base note is invalid
         }
 
         for (let i = 0; i < 10; i++) {
@@ -222,15 +243,42 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         // Add mouseover event listener to handle drag and click events
-        light.addEventListener("mouseover", (event) => {
-            if (event.buttons === 1) {
-                handleEnter(light, event);
-            }
-        });
-        light.addEventListener("click", (event) =>
-            handleEnter(light, event)
-        );
+        // light.addEventListener("mouseover", (event) => {
+        //     if (event.buttons === 1) {
+        //         handleEnter(light, event);
+        //     }
+        // });
+        // light.addEventListener("click", (event) =>
+        //     handleEnter(light, event)
+        // );
     });
+
+    document.addEventListener("keydown", (event) => {
+        const keyToLightMap = {
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7": 7,
+            "8": 8,
+            "9": 9,
+            "0": 10,
+        };
+    
+        const lightId = keyToLightMap[event.key];
+        if (lightId !== undefined) {
+            const light = document.querySelector(`.light[data-id="${lightId}"]`);
+            if (light) {
+                handleEnter(light);
+            } else {
+                console.error(`No light found with ID ${lightId}`);
+            }
+        }
+    });
+
+    
     content.addEventListener("touchmove", handleTouchMove);
     startButton.addEventListener("click", startAudio);
 });
