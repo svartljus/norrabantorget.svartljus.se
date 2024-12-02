@@ -106,7 +106,7 @@ body {
 .light:before,
 .light:after {
     display: block;
-    border: 1px solid var(--light-border-color, white);
+    border: 2px solid var(--light-border-color, white);
     border-radius: 50%;
 }
 
