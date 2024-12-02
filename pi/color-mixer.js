@@ -1,6 +1,6 @@
 import WebSocket from "ws";
 
-const DELAYOFFSET = 200;
+const DELAYOFFSET = 700;
 
 const RINGS = [
   {
@@ -70,7 +70,7 @@ const COLOR_PRESET_SPEC =
   '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[255,0,0],[0,0,255]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[0,0,0],[0,0,0]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
 
 const IDLE_PRESET_SPEC =
-  '{"on":true,"bri":128,"transition":5,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[228,83,21],[255,143,74],[0,0,255]],"fx":2,"sx":71,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[228,83,21],[255,143,74],[0,0,0]],"fx":2,"sx":71,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
+  '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,255]],"fx":2,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":612,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":2,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
 
 const IDLE_PRESET = 10;
 const COLOR_PRESET = 11;
@@ -447,7 +447,7 @@ function changePresetFromState() {
 
       setTimeout(() => {
         lightCurrentState = "idle";
-      }, 3000);
+      }, 13000);
     }
   }
 }
@@ -519,7 +519,25 @@ async function init() {
   console.log("Configuring rings...");
   for (var k = 0; k < RINGS.length; k++) {
     // TODO: configure leds?
-    await configureRingPreset(k, IDLE_PRESET, IDLE_PRESET_SPEC);
+
+    const parsed = JSON.parse(IDLE_PRESET_SPEC);
+
+    let r1 = Math.round(228 + Math.random() * 20);
+    let g1 = Math.round(155 + Math.random() * 30);
+    let r2 = Math.round(228 + Math.random() * 20);
+    let g2 = Math.round(155 + Math.random() * 30);
+    let t1 = Math.round(10 + Math.random() * 1);
+    let t2 = Math.round(10 + Math.random() * 1);
+  
+    // console.log('parsed', parsed)
+  
+    parsed.seg[0].col[0] = [r1, g1, 0];
+    parsed.seg[0].c3 = t1;
+  
+    parsed.seg[1].col[0] = [r2, g2, 0];
+    parsed.seg[1].c3 = t2;
+    
+    await configureRingPreset(k, IDLE_PRESET, JSON.stringify(parsed));
     await configureRingPreset(k, COLOR_PRESET, COLOR_PRESET_SPEC);
     await setRingModeColor(k);
   }
