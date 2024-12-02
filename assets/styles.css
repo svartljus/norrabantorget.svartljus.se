@@ -202,7 +202,7 @@ body {
         ); /* Change gradient to vertical */
     }
     .light:before {
-        padding: 39vw;
+        padding: 36vw;
     }
     .light:not(:first-of-type) {
         border-bottom-width: 1px;
