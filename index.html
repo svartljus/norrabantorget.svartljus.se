@@ -9,24 +9,17 @@
         <title>Dendrolux Norra Bantorget</title>
         <link rel="stylesheet" href="assets/styles.css" />
         <script defer src="assets/tone.js"></script>
+        <script defer src="assets/geofencing.js"></script>
         <script defer src="assets/script.js"></script>
         <script
             async
             src="https://www.googletagmanager.com/gtag/js?id=G-SY1NC439T1"
         ></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag("js", new Date());
-
-            gtag("config", "G-SY1NC439T1");
-        </script>
+        <script defer src="assets/ga.js"></script>
     </head>
     <body>
         <div id="startScreen" class="start-screen">
-            <button id="startButton" class="start-button">Play</button>
+            <button id="startButton" class="start-button" disabled>Play</button>
         </div>
         <main class="content">
             <label id="randomColorToggleLabel">

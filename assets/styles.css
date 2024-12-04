@@ -26,12 +26,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
     z-index: 1000; /* Ensure it stays above everything else */
     touch-action: auto; /* Allow interactions like clicking/tapping */
 }
 
 .start-button {
     background-color: #f39c12;
+    display:block;
     color: white;
     padding: 20px 40px;
     font-size: 1.5rem;
@@ -40,6 +42,11 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     touch-action: auto; /* Allow interactions like clicking/tapping */
+}
+
+.start-button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
 }
 
 /* General body styling for layout */
