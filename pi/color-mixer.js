@@ -1,68 +1,77 @@
 import WebSocket from "ws";
 
-const DELAYOFFSET = 700;
+const DELAYOFFSET = 500;
 
 const RINGS = [
   {
     index: 1,
-    delay: DELAYOFFSET * 0,
-    ip: "192.168.10.201",
+    delay: 1 + DELAYOFFSET * 0,
+    ip: "192.168.1.201",
+    errorCount: 0,
+    lastError: 0,
   },
   {
     index: 2,
-    delay: DELAYOFFSET * 1,
-    ip: "192.168.10.202",
+    delay: 1 + DELAYOFFSET * 1,
+    ip: "192.168.1.202",
+    errorCount: 0,
+    lastError: 0,
   },
   {
     index: 3,
-    delay: DELAYOFFSET * 2,
-    ip: "192.168.10.203",
+    delay: 1 + DELAYOFFSET * 2,
+    ip: "192.168.1.203",
+    errorCount: 0,
+    lastError: 0,
   },
   {
     index: 4,
-    delay: DELAYOFFSET * 3,
-    ip: "192.168.10.204",
+    delay: 1 + DELAYOFFSET * 3,
+    ip: "192.168.1.204",
+    errorCount: 0,
+    lastError: 0,
   },
   {
     index: 5,
-    delay: DELAYOFFSET * 4,
-    ip: "192.168.10.205",
+    delay: 1 + DELAYOFFSET * 4,
+    ip: "192.168.1.205",
+    errorCount: 0,
+    lastError: 0,
   },
-
   {
     index: 6,
-    delay: DELAYOFFSET * 5,
-    ip: "192.168.10.206",
+    delay: 1 + DELAYOFFSET * 5,
+    ip: "192.168.1.206",
+    errorCount: 0,
+    lastError: 0,
   },
   {
     index: 7,
-    delay: DELAYOFFSET * 6,
-    ip: "192.168.10.207",
+    delay: 1 + DELAYOFFSET * 6,
+    ip: "192.168.1.207",
+    errorCount: 0,
+    lastError: 0,
   },
   {
     index: 8,
-    delay: DELAYOFFSET * 7,
-    ip: "192.168.10.208",
+    delay: 1 + DELAYOFFSET * 7,
+    ip: "192.168.1.208",
+    errorCount: 0,
+    lastError: 0,
   },
   {
     index: 9,
-    delay: DELAYOFFSET * 8,
-    ip: "192.168.10.209",
+    delay: 1 + DELAYOFFSET * 8,
+    ip: "192.168.1.209",
+    errorCount: 0,
+    lastError: 0,
   },
   {
     index: 10,
-    delay: DELAYOFFSET * 9,
-    ip: "192.168.10.210",
-  },
-  {
-    index: 11,
-    delay: DELAYOFFSET * 10,
-    ip: "192.168.10.211",
-  },
-  {
-    index: 13,
-    delay: DELAYOFFSET * 11,
-    ip: "192.168.10.212",
+    delay: 1 + DELAYOFFSET * 9,
+    ip: "192.168.1.210",
+    errorCount: 0,
+    lastError: 0,
   },
 ];
 
@@ -71,18 +80,8 @@ const OFF_PRESET_SPEC =
 const COLOR_PRESET_SPEC =
   '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[0,0,0],[0,0,0]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[0,0,0],[0,0,0]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
 
-// const IDLE_PRESET_SPEC =
-//   '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":2,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":2,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
-// const BREATHE_IN_PRESET_SPEC =
-//   '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":0,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":0,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
-// const BREATHE_OUT_PRESET_SPEC =
-//   '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":0,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":0,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
-
 const OFF_PRESET = 1;
 const COLOR_PRESET = 11;
-// const IDLE_PRESET = 10;
-// const BREATHE_IN_PRESET = 12;
-// const BREATHE_OUT_PRESET = 13;
 const RELAY_SERVER_URL = "wss://sync.possan.codes/broadcast/dendrolux";
 const SLOW_FADE_TIME = 2.0;
 const BREATHE_IN_FADE_TIME = 1.5;
@@ -95,6 +94,8 @@ const COLOR_SUSTAIN_TIME = 700;
 let lightTargetState = "idle";
 let lightCurrentState = "off";
 let exitLiveDeadline = 0;
+let startTime = 0
+let connectionErrors = 0;
 
 let ringColorState = [
   {
@@ -180,7 +181,11 @@ function _sendStateToRing(index, stateUpdate) {
     .then((r) => r.json())
     .then((r) => {})
     .catch((e) => {
-      console.log("API error");
+      ring.errorCount++;
+      ring.lastError = new Date().getTime();
+      console.log(
+        "! api call failed for " + ring.ip + " (" + ring.errorCount + " errors)"
+      );
     });
 }
 
@@ -220,21 +225,13 @@ function setRingColorBreatheOut(index) {
   setRingColor(index, r1, g1, b1, BREATHE_OUT_FADE_TIME);
 }
 
-function setRingModeIdle(index) {
-  _setRingPreset(index, IDLE_PRESET);
-}
+// function setRingModeIdle(index) {
+//   _setRingPreset(index, IDLE_PRESET);
+// }
 
 function setRingModeColor(index) {
   _setRingPreset(index, COLOR_PRESET);
 }
-
-// function setRingModeBreatheIn(index) {
-//   _setRingPreset(index, BREATHE_IN_PRESET);
-// }
-
-// function setRingModeBreatheOut(index) {
-//   _setRingPreset(index, BREATHE_OUT_PRESET);
-// }
 
 function handleRelayMessage(msg) {
   console.log("got message: " + JSON.stringify(msg));
@@ -264,17 +261,26 @@ function handleRelayMessage(msg) {
   }
 }
 
+let ws = undefined;
+
+function queueReconnect() {
+  console.log("Queueing re-connect...");
+  setTimeout(connectToRelay, 5000);
+}
+
 function connectToRelay() {
-  const ws = new WebSocket(RELAY_SERVER_URL);
+  ws = new WebSocket(RELAY_SERVER_URL);
 
   ws.on("error", function error(e) {
     console.error("connection error", e);
-    // reconnect?
+    connectionErrors ++;
+    ws = undefined;
   });
 
   ws.on("close", function error(e) {
     console.log("connection closed", e);
-    // reconnect?
+    ws = undefined;
+    queueReconnect();
   });
 
   ws.on("open", function open() {
@@ -282,7 +288,9 @@ function connectToRelay() {
   });
 
   ws.on("message", function message(data) {
-    handleRelayMessage(JSON.parse(data));
+    if (ws) {
+      handleRelayMessage(JSON.parse(data));
+    }
   });
 }
 
@@ -352,11 +360,11 @@ function startBreatheTimer() {
   breathingTimer = setInterval(() => {
     if (breathingState) {
       for (var k = 0; k < RINGS.length; k++) {
-        setTimeout(setRingColorBreatheOut.bind(this, k), RINGS[k].delay + 1);
+        setTimeout(setRingColorBreatheOut.bind(this, k), RINGS[k].delay);
       }
     } else {
       for (var k = 0; k < RINGS.length; k++) {
-        setTimeout(setRingColorBreatheIn.bind(this, k), RINGS[k].delay + 1);
+        setTimeout(setRingColorBreatheIn.bind(this, k), RINGS[k].delay);
       }
     }
     breathingState = !breathingState;
@@ -382,10 +390,6 @@ function changePresetFromState() {
     if (lightCurrentState !== "fade-to-idle" && lightCurrentState !== "idle") {
       lightCurrentState = "fade-to-idle";
 
-      // for (var k = 0; k < RINGS.length; k++) {
-      //   setTimeout(setRingModeIdle.bind(this, k), RINGS[k].delay);
-      // }
-
       startBreatheTimer();
 
       setTimeout(() => {
@@ -410,12 +414,48 @@ function queueUpdateRingState() {
   }, 100);
 }
 
+function reportErrors() {
+  const T = new Date().getTime();
+
+  const uptime = T - startTime;
+
+  const errorStats = {
+    type: "error-stats",
+    uptime,
+    startTime,
+    connectionErrors,
+    ringErrors: [],
+  };
+
+  for (var k = 0; k < RINGS.length; k++) {
+    const r = RINGS[k];
+    if (r.errorCount > 0){
+      errorStats.ringErrors.push({
+        ip: r.ip,
+        errors: r.errorCount,
+        sinceLast: Math.max(0, T - r.lastError),
+      });
+    }
+  }
+
+  console.log('Send error stats: ' + JSON.stringify(errorStats))
+  if (ws) {
+    ws.send(JSON.stringify(errorStats));
+  }
+}
+
+function startErrorReporter() {
+  setInterval(reportErrors, 10000);
+}
+
 async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function init() {
-  // configure exit handler
+  // configure exit handlers
+
+  startTime = (new Date()).getTime();
 
   process.stdin.resume(); // so the program will not close instantly
 
@@ -460,6 +500,8 @@ async function init() {
   console.log("Dendrolux ring server");
   console.log("");
 
+  startErrorReporter();
+
   let t1 = 4; //  Math.round(10 + Math.random() * 1);
 
   console.log("Configuring rings...");
@@ -472,45 +514,6 @@ async function init() {
     parsed3.seg[1].grp = k + 1;
     await configureRingPreset(k, OFF_PRESET, JSON.stringify(parsed3));
   }
-
-  // for (var k = 0; k < RINGS.length; k++) {
-  //   let r1 = 226; // Math.round(228 + Math.random() * 20);
-  //   let g1 = 155; // Math.round(155 + Math.random() * 30);
-  //   const parsed = JSON.parse(IDLE_PRESET_SPEC);
-  //   parsed.seg[0].col[0] = [r1, g1, 0];
-  //   parsed.seg[1].col[0] = [r1, g1, 0];
-  //   parsed.seg[0].sx = t1;
-  //   parsed.seg[1].sx = t1;
-  //   parsed.seg[0].grp = k + 1;
-  //   parsed.seg[1].grp = k + 1;
-  //   await configureRingPreset(k, IDLE_PRESET, JSON.stringify(parsed));
-  // }
-
-  // for (var k = 0; k < RINGS.length; k++) {
-  //   let r1 = 80; // Math.round(228 + Math.random() * 20);
-  //   let g1 = 50; // Math.round(155 + Math.random() * 30);
-  //   const parsed = JSON.parse(BREATHE_IN_PRESET_SPEC);
-  //   parsed.seg[0].col[0] = [r1, g1, 0];
-  //   parsed.seg[1].col[0] = [r1, g1, 0];
-  //   parsed.seg[0].sx = t1;
-  //   parsed.seg[1].sx = t1;
-  //   parsed.seg[0].grp = k + 1;
-  //   parsed.seg[1].grp = k + 1;
-  //   await configureRingPreset(k, BREATHE_IN_PRESET, JSON.stringify(parsed));
-  // }
-
-  // for (var k = 0; k < RINGS.length; k++) {
-  //   let r1 = 226; // Math.round(228 + Math.random() * 20);
-  //   let g1 = 155; // Math.round(155 + Math.random() * 30);
-  //   const parsed = JSON.parse(BREATHE_OUT_PRESET_SPEC);
-  //   parsed.seg[0].col[0] = [r1, g1, 0];
-  //   parsed.seg[1].col[0] = [r1, g1, 0];
-  //   parsed.seg[0].sx = t1;
-  //   parsed.seg[1].sx = t1;
-  //   parsed.seg[0].grp = k + 1;
-  //   parsed.seg[1].grp = k + 1;
-  //   await configureRingPreset(k, BREATHE_OUT_PRESET, JSON.stringify(parsed));
-  // }
 
   for (var k = 0; k < RINGS.length; k++) {
     const parsed2 = JSON.parse(COLOR_PRESET_SPEC);
@@ -560,44 +563,6 @@ async function init() {
 
   console.log("Start main loop.");
   queueUpdateRingState();
-
-  // console.log("Starting rings idle mode.");
-  // for (var k = 0; k < RINGS.length; k++) {
-  //   setTimeout(setRingModeIdle.bind(this, k), RINGS[k].delay);
-  // }
-  // await delay(9000);
-
-  // console.log("Trigger simulated events.");
-
-  // handleRelayMessage({
-  //   _id: "dummy1",
-  //   type: "ping",
-  //   id: "1",
-  // });
-
-  // await delay(2000);
-
-  // handleRelayMessage({
-  //   _id: "dummy1",
-  //   type: "enter",
-  //   id: "1",
-  //   color: [255, 0, 0],
-  // });
-
-  // handleRelayMessage({
-  //   _id: "dummy2",
-  //   type: "enter",
-  //   id: "2",
-  //   color: [255, 0, 0],
-  // });
-  // await delay(2000);
-
-  // handleRelayMessage({
-  //   _id: "dummy3",
-  //   type: "enter",
-  //   id: "1",
-  //   color: [0, 255, 0],
-  // });
 
   await delay(1000);
 
