@@ -66,16 +66,28 @@ const RINGS = [
   },
 ];
 
+const OFF_PRESET_SPEC =
+  '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[0,0,0],[0,0,0]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[0,0,0],[0,0,0]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0}]}';
 const COLOR_PRESET_SPEC =
-  '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[255,0,0],[0,0,255]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[0,0,0],[0,0,0]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
+  '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[0,0,0],[0,0,0]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[0,0,0],[0,0,0],[0,0,0]],"fx":0,"sx":128,"ix":128,"pal":0,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
 
-const IDLE_PRESET_SPEC =
-  '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,255]],"fx":2,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":612,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":2,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
+// const IDLE_PRESET_SPEC =
+//   '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":2,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":2,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
+// const BREATHE_IN_PRESET_SPEC =
+//   '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":0,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":0,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
+// const BREATHE_OUT_PRESET_SPEC =
+//   '{"on":true,"bri":128,"transition":10,"mainseg":0,"seg":[{"id":0,"start":0,"stop":320,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":0,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"id":1,"start":320,"stop":640,"grp":1,"spc":0,"of":0,"on":true,"frz":false,"bri":255,"cct":127,"set":0,"col":[[255,153,0],[0,0,0],[0,0,0]],"fx":0,"sx":15,"ix":128,"pal":2,"c1":128,"c2":128,"c3":16,"sel":true,"rev":false,"mi":false,"o1":false,"o2":false,"o3":false,"si":0,"m12":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0},{"stop":0}]}';
 
-const IDLE_PRESET = 10;
+const OFF_PRESET = 1;
 const COLOR_PRESET = 11;
+// const IDLE_PRESET = 10;
+// const BREATHE_IN_PRESET = 12;
+// const BREATHE_OUT_PRESET = 13;
 const RELAY_SERVER_URL = "wss://sync.possan.codes/broadcast/dendrolux";
 const SLOW_FADE_TIME = 2.0;
+const BREATHE_IN_FADE_TIME = 1.5;
+const BREATHE_OUT_FADE_TIME = 3.0;
+const BREATHE_INTERVAL = 6000;
 const QUICK_FADE_TIME = 0.5;
 const LIVE_TIMEOUT_TIME = 15000;
 const COLOR_SUSTAIN_TIME = 700;
@@ -166,17 +178,11 @@ function _sendStateToRing(index, stateUpdate) {
     body: req,
   })
     .then((r) => r.json())
-    .then((r) => {
-      // console.log("OK");
-    })
+    .then((r) => {})
     .catch((e) => {
       console.log("API error");
     });
 }
-
-function configureRingSettings(index, settingsobj) {}
-
-function configureRingPalette(index, paletteindex, paletteobj) {}
 
 async function configureRingPreset(index, presetindex, presetobj) {
   const payload = JSON.parse(presetobj);
@@ -185,8 +191,11 @@ async function configureRingPreset(index, presetindex, presetobj) {
 }
 
 function _setRingPreset(index, presetIndex) {
-  console.log("Set ring preset", index, presetIndex);
-  _sendStateToRing(index, { ps: presetIndex });
+  let time = Math.floor(new Date().getTime() / 1000);
+  time -= index * 2000;
+
+  console.log("Set ring preset", index, presetIndex, time);
+  _sendStateToRing(index, { ps: presetIndex, time });
 }
 
 function setRingColor(index, r, g, b, fadetime) {
@@ -197,6 +206,20 @@ function setRingColor(index, r, g, b, fadetime) {
   });
 }
 
+function setRingColorBreatheIn(index) {
+  let r1 = Math.round(255 + Math.random() * 0);
+  let g1 = Math.round(140 + Math.random() * 0);
+  let b1 = Math.round(50 + Math.random() * 0);
+  setRingColor(index, r1, g1, b1, BREATHE_IN_FADE_TIME);
+}
+
+function setRingColorBreatheOut(index) {
+  let r1 = Math.round(80 + Math.random() * 0);
+  let g1 = Math.round(30 + Math.random() * 0);
+  let b1 = Math.round(0);
+  setRingColor(index, r1, g1, b1, BREATHE_OUT_FADE_TIME);
+}
+
 function setRingModeIdle(index) {
   _setRingPreset(index, IDLE_PRESET);
 }
@@ -204,6 +227,14 @@ function setRingModeIdle(index) {
 function setRingModeColor(index) {
   _setRingPreset(index, COLOR_PRESET);
 }
+
+// function setRingModeBreatheIn(index) {
+//   _setRingPreset(index, BREATHE_IN_PRESET);
+// }
+
+// function setRingModeBreatheOut(index) {
+//   _setRingPreset(index, BREATHE_OUT_PRESET);
+// }
 
 function handleRelayMessage(msg) {
   console.log("got message: " + JSON.stringify(msg));
@@ -220,45 +251,15 @@ function handleRelayMessage(msg) {
         color: msg.color,
         expires: new Date().getTime() + 10000,
       });
-      // connectionButtonState[msg._id] = {
-      //   ring: ~~msg.id - 1,
-      //   color: msg.color,
-      //   expires: new Date().getTime() + 10000,
-      // };
     }
   }
-
-  //   if (msg.type === "exit") {
-  //     // if (msg.id) {
-  //     //   if (connectionButtonState[msg._id]) {
-  //     //     delete connectionButtonState[msg._id];
-  //     //   }
-  //     // }
-  //   }
-
-  //   if (msg.type === ".disconnect") {
-  //     // if (msg._id) {
-  //     //   if (connectionButtonState[msg._id]) {
-  //     //     delete connectionButtonState[msg._id];
-  //     //   }
-  //     // }
-  //   }
 
   if (msg.type === "ping") {
     if (msg.id) {
       buttonEvents.push({
         ring: ~~msg.id - 1,
-        // color: [0, 0, 0],
         expires: new Date().getTime() + 10000,
       });
-      // wake up
-      // lightTargetState = "live";
-      // should go to live mode
-      // connectionButtonState[msg._id] = {
-      //   ring: ~~msg.id - 1,
-      //   color: [0, 0, 0],
-      //   expires: new Date().getTime() + 10000,
-      // };
     }
   }
 }
@@ -296,15 +297,6 @@ function evictOldNodes() {
 }
 
 function changeLightTargetStateFromConnections() {
-  //   if (
-  //     lightTargetState === "idle" &&
-  //     (Object.keys(connectionButtonState).length > 0 || buttonEvents.length > 0)
-  //   ) {
-  //     lightTargetState = "live"; // should go to live mode
-  //     console.log("Lights should go to live mode now.");
-  //     exitLiveDeadline = new Date().getTime() + LIVE_TIMEOUT_TIME;
-  //   }
-
   if (lightTargetState === "live" && new Date().getTime() > exitLiveDeadline) {
     console.log("Lights should be idle now.");
     lightTargetState = "idle";
@@ -314,88 +306,16 @@ function changeLightTargetStateFromConnections() {
 function updateTargetRingColorsFromState() {
   const T = new Date().getTime();
 
-  //   for (let k = 0; k < ringColorState.length; k++) {
-  //     let _r = 0;
-  //     let _g = 0;
-  //     let _b = 0;
-  //     // let any = 0;
-
-  //     // if (buttonEvents.length > 0){
-  //     //     let evt = buttonEvents.shift();
-  //     //     do {
-  //     //         console.log("got event", evt);
-  //     //         if (evt.ring === k) {
-  //     //             _r = evt.color[0];
-  //     //             _g = evt.color[1];
-  //     //             _b = evt.color[2];
-  //     //             any++;
-  //     //         }
-  //     //         evt = buttonEvents.shift();
-  //     //     } while (evt);
-  //     // }
-
-  //     // // for (const id of Object.keys(connectionButtonState)) {
-  //     // //   if (connectionButtonState[id].ring === k) {
-  //     // //     _r += connectionButtonState[id].color[0];
-  //     // //     _g += connectionButtonState[id].color[1];
-  //     // //     _b += connectionButtonState[id].color[2];
-  //     // //     any++;
-  //     // //   }
-  //     // // }
-
-  //     // // _r = Math.max(0, Math.min(255, Math.round(_r)));
-  //     // // _g = Math.max(0, Math.min(255, Math.round(_g)));
-  //     // // _b = Math.max(0, Math.min(255, Math.round(_b)));
-
-  //     // ringColorState[k].any = any > 0;
-  //     // if (any) {
-  //     //   ringColorState[k].lastActivity = new Date().getTime();
-  //     // }
-  //     ringColorState[k].targetColor = [_r, _g, _b];
-  //   }
-
-  //   for (let k = 0; k < ringColorState.length; k++) {
-  //     let _r = 0;
-  //     let _g = 0;
-  //     let _b = 0;
-  //     let any = 0;
-
-  //   if (buttonEvents.length > 0) {
-  // let evt = buttonEvents.shift();
   let evt = undefined;
   while ((evt = buttonEvents.shift())) {
     console.log("consumed queued button event", evt);
     if (evt.color && evt.ring !== undefined) {
       ringColorState[evt.ring].targetColor = evt.color;
       ringColorState[evt.ring].expires = T + COLOR_SUSTAIN_TIME;
-      // any++;
-
       lightTargetState = "live"; // should go to live mode
       exitLiveDeadline = new Date().getTime() + LIVE_TIMEOUT_TIME;
     }
-    //   evt = buttonEvents.shift();
   }
-  //   }
-
-  // for (const id of Object.keys(connectionButtonState)) {
-  //   if (connectionButtonState[id].ring === k) {
-  //     _r += connectionButtonState[id].color[0];
-  //     _g += connectionButtonState[id].color[1];
-  //     _b += connectionButtonState[id].color[2];
-  //     any++;
-  //   }
-  // }
-
-  // _r = Math.max(0, Math.min(255, Math.round(_r)));
-  // _g = Math.max(0, Math.min(255, Math.round(_g)));
-  // _b = Math.max(0, Math.min(255, Math.round(_b)));
-
-  //     ringColorState[k].any = any > 0;
-  //     if (any) {
-  //       ringColorState[k].lastActivity = new Date().getTime();
-  //     }
-  //     ringColorState[k].targetColor = [_r, _g, _b];
-  //   }
 
   for (let k = 0; k < ringColorState.length; k++) {
     if (ringColorState[k].expires && ringColorState[k].expires < T) {
@@ -424,10 +344,31 @@ function updateRingsFromState() {
   }
 }
 
+let breathingState = 0;
+let breathingTimer = 0;
+
+function startBreatheTimer() {
+  breathingState = 0;
+  breathingTimer = setInterval(() => {
+    if (breathingState) {
+      for (var k = 0; k < RINGS.length; k++) {
+        setTimeout(setRingColorBreatheOut.bind(this, k), RINGS[k].delay + 1);
+      }
+    } else {
+      for (var k = 0; k < RINGS.length; k++) {
+        setTimeout(setRingColorBreatheIn.bind(this, k), RINGS[k].delay + 1);
+      }
+    }
+    breathingState = !breathingState;
+  }, BREATHE_INTERVAL);
+}
+
 function changePresetFromState() {
   if (lightTargetState === "live") {
     if (lightCurrentState !== "fade-to-live" && lightCurrentState !== "live") {
       lightCurrentState = "fade-to-live";
+
+      clearInterval(breathingTimer);
 
       for (var k = 0; k < RINGS.length; k++) {
         setRingModeColor(k);
@@ -441,9 +382,11 @@ function changePresetFromState() {
     if (lightCurrentState !== "fade-to-idle" && lightCurrentState !== "idle") {
       lightCurrentState = "fade-to-idle";
 
-      for (var k = 0; k < RINGS.length; k++) {
-        setTimeout(setRingModeIdle.bind(this, k), RINGS[k].delay);
-      }
+      // for (var k = 0; k < RINGS.length; k++) {
+      //   setTimeout(setRingModeIdle.bind(this, k), RINGS[k].delay);
+      // }
+
+      startBreatheTimer();
 
       setTimeout(() => {
         lightCurrentState = "idle";
@@ -503,6 +446,7 @@ async function init() {
 
   // catches ctrl+c event
   process.on("SIGINT", exitHandler.bind(null, { exit: true }));
+  process.on("SIGTERM", exitHandler.bind(null, { exit: true }));
 
   // catches "kill pid" (for example: nodemon restart)
   process.on("SIGUSR1", exitHandler.bind(null, { exit: true }));
@@ -516,31 +460,79 @@ async function init() {
   console.log("Dendrolux ring server");
   console.log("");
 
+  let t1 = 4; //  Math.round(10 + Math.random() * 1);
+
   console.log("Configuring rings...");
+
   for (var k = 0; k < RINGS.length; k++) {
-    // TODO: configure leds?
+    const parsed3 = JSON.parse(OFF_PRESET_SPEC);
+    parsed3.seg[0].sx = t1;
+    parsed3.seg[1].sx = t1;
+    parsed3.seg[0].grp = k + 1;
+    parsed3.seg[1].grp = k + 1;
+    await configureRingPreset(k, OFF_PRESET, JSON.stringify(parsed3));
+  }
 
-    const parsed = JSON.parse(IDLE_PRESET_SPEC);
+  // for (var k = 0; k < RINGS.length; k++) {
+  //   let r1 = 226; // Math.round(228 + Math.random() * 20);
+  //   let g1 = 155; // Math.round(155 + Math.random() * 30);
+  //   const parsed = JSON.parse(IDLE_PRESET_SPEC);
+  //   parsed.seg[0].col[0] = [r1, g1, 0];
+  //   parsed.seg[1].col[0] = [r1, g1, 0];
+  //   parsed.seg[0].sx = t1;
+  //   parsed.seg[1].sx = t1;
+  //   parsed.seg[0].grp = k + 1;
+  //   parsed.seg[1].grp = k + 1;
+  //   await configureRingPreset(k, IDLE_PRESET, JSON.stringify(parsed));
+  // }
 
-    let r1 = Math.round(228 + Math.random() * 20);
-    let g1 = Math.round(155 + Math.random() * 30);
-    let r2 = Math.round(228 + Math.random() * 20);
-    let g2 = Math.round(155 + Math.random() * 30);
-    let t1 = Math.round(10 + Math.random() * 1);
-    let t2 = Math.round(10 + Math.random() * 1);
-  
-    // console.log('parsed', parsed)
-  
-    parsed.seg[0].col[0] = [r1, g1, 0];
-    parsed.seg[0].c3 = t1;
-  
-    parsed.seg[1].col[0] = [r2, g2, 0];
-    parsed.seg[1].c3 = t2;
-    
-    await configureRingPreset(k, IDLE_PRESET, JSON.stringify(parsed));
-    await configureRingPreset(k, COLOR_PRESET, COLOR_PRESET_SPEC);
+  // for (var k = 0; k < RINGS.length; k++) {
+  //   let r1 = 80; // Math.round(228 + Math.random() * 20);
+  //   let g1 = 50; // Math.round(155 + Math.random() * 30);
+  //   const parsed = JSON.parse(BREATHE_IN_PRESET_SPEC);
+  //   parsed.seg[0].col[0] = [r1, g1, 0];
+  //   parsed.seg[1].col[0] = [r1, g1, 0];
+  //   parsed.seg[0].sx = t1;
+  //   parsed.seg[1].sx = t1;
+  //   parsed.seg[0].grp = k + 1;
+  //   parsed.seg[1].grp = k + 1;
+  //   await configureRingPreset(k, BREATHE_IN_PRESET, JSON.stringify(parsed));
+  // }
+
+  // for (var k = 0; k < RINGS.length; k++) {
+  //   let r1 = 226; // Math.round(228 + Math.random() * 20);
+  //   let g1 = 155; // Math.round(155 + Math.random() * 30);
+  //   const parsed = JSON.parse(BREATHE_OUT_PRESET_SPEC);
+  //   parsed.seg[0].col[0] = [r1, g1, 0];
+  //   parsed.seg[1].col[0] = [r1, g1, 0];
+  //   parsed.seg[0].sx = t1;
+  //   parsed.seg[1].sx = t1;
+  //   parsed.seg[0].grp = k + 1;
+  //   parsed.seg[1].grp = k + 1;
+  //   await configureRingPreset(k, BREATHE_OUT_PRESET, JSON.stringify(parsed));
+  // }
+
+  for (var k = 0; k < RINGS.length; k++) {
+    const parsed2 = JSON.parse(COLOR_PRESET_SPEC);
+    parsed2.seg[0].sx = t1;
+    parsed2.seg[1].sx = t1;
+    parsed2.seg[0].grp = k + 1;
+    parsed2.seg[1].grp = k + 1;
+    await configureRingPreset(k, COLOR_PRESET, JSON.stringify(parsed2));
+  }
+
+  // sync time
+  console.log("Sync time...");
+  const time = Math.floor(new Date().getTime() / 1000);
+  for (var k = 0; k < RINGS.length; k++) {
+    _sendStateToRing(k, { time: time - k * 3000 });
+  }
+
+  console.log("Set color mode...");
+  for (var k = 0; k < RINGS.length; k++) {
     await setRingModeColor(k);
   }
+
   console.log("Done.");
   console.log("");
 
@@ -550,34 +542,30 @@ async function init() {
   for (var k = 0; k < RINGS.length; k++) {
     await setRingColor(k, 255, 0, 0, 1);
   }
-  await delay(1000);
+  await delay(2000);
   for (var k = 0; k < RINGS.length; k++) {
     await setRingColor(k, 0, 255, 0, 1);
   }
-  await delay(1000);
+  await delay(2000);
   for (var k = 0; k < RINGS.length; k++) {
     await setRingColor(k, 0, 0, 255, 1);
   }
-  await delay(1000);
+  await delay(2000);
   for (var k = 0; k < RINGS.length; k++) {
     await setRingColor(k, 0, 0, 0, 1);
   }
+
   console.log("Done.");
-
-  await delay(1000);
-
-  console.log("Starting rings idle mode.");
-  for (var k = 0; k < RINGS.length; k++) {
-    // await setRingModeIdle(k);
-    for (var k = 0; k < RINGS.length; k++) {
-      setTimeout(setRingModeIdle.bind(this, k), RINGS[k].delay);
-    }
-  }
-
-  await delay(3000);
+  await delay(2000);
 
   console.log("Start main loop.");
   queueUpdateRingState();
+
+  // console.log("Starting rings idle mode.");
+  // for (var k = 0; k < RINGS.length; k++) {
+  //   setTimeout(setRingModeIdle.bind(this, k), RINGS[k].delay);
+  // }
+  // await delay(9000);
 
   // console.log("Trigger simulated events.");
 
