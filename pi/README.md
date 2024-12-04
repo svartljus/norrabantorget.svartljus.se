@@ -10,16 +10,17 @@ On the pi, run raspi-config to enable SSH, configure wireless if needed, and set
 
 From your machine, set up ssh keys (optional)
 
-    ssh-copy-id -i ~/.ssh/id_rsa dendro@raspberry-ip
+    ssh-copy-id -i ~/.ssh/id_rsa dendro@192.168.1.10
 
 From your machine, copy over the scripts:
 
-    scp color-mixer.js dendro@raspberry-ip:dendro/
-    scp package.json dendro@raspberry-ip:dendro/
-    scp loop.sh dendro@raspberry-ip:dendro/
-    scp color-mixer.service dendro@raspberry-ip:dendro/color-mixer.script
+    scp color-mixer.js dendro@192.168.1.10:dendro/
+    scp package.json dendro@192.168.1.10:dendro/
+    scp loop.sh dendro@192.168.1.10:dendro/
+    scp color-mixer.service dendro@192.168.1.10:dendro/color-mixer.script
+    scp color-mixer.timer dendro@192.168.1.10:dendro/color-mixer.timer
 
-    scp ngrok.serice dendro@raspberry-ip:
+    scp ngrok.serice dendro@192.168.1.10:
 
 On the pi, run:
 
@@ -32,8 +33,10 @@ On the pi, run:
     apt-get install nodejs npm
     npm i
     sudo cp color-mixer.service /etc/systemd/system/color-mixer.service
+    sudo cp color-mixer.timer /etc/systemd/system/color-mixer.timer
     sudo systemctl daemon-reload
     sudo systemctl enable color-mixer.service
+    sudo systemctl enable color-mixer.timer
 
 On the pi, enable read-only filesystem (overlay filesystem) in raspi-config
 
