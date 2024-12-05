@@ -38,29 +38,36 @@ document.addEventListener("DOMContentLoaded", () => {
         return R * c;
     };
 
-    const handleStartButtonClick = () => {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                const distance = calculateDistance(
-                    latitude,
-                    longitude,
-                    targetCoordinates.lat,
-                    targetCoordinates.lng
+    const handleStartButtonClick = async () => {
+        const getPosition = () => {
+            return new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => resolve(position),
+                    (error) => reject(error)
                 );
+            });
+        };
 
-                if (distance > maxDistance) {
-                    alert(
-                        `You are not within range (${maxDistance} meters of the installation). You can still play, but actions won't impact the rings.\n\nPlease move closer and refresh the page if you'd like to enable ring interactions.`
-                    );
-                }
-            },
-            (error) => {
+        try {
+            const position = await getPosition();
+            const { latitude, longitude } = position.coords;
+            const distance = calculateDistance(
+                latitude,
+                longitude,
+                targetCoordinates.lat,
+                targetCoordinates.lng
+            );
+
+            if (distance > maxDistance) {
                 alert(
-                    "Unable to retrieve your location. GPS is required for range verification."
+                    `You are not within range (${maxDistance} meters of the installation). You can still play, but actions won't impact the rings.\n\nPlease move closer and refresh the page if you'd like to enable ring interactions.`
                 );
             }
-        );
+        } catch (error) {
+            alert(
+                "Unable to retrieve your location. GPS is required for range verification."
+            );
+        }
 
         startAudio();
     };
