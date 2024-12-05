@@ -573,7 +573,7 @@ async function init() {
   for (var k = 0; k < RINGS.length; k++) {
     await setRingColor(k, c1[0], c1[1], c1[2], BREATHE_IN_FADE_TIME);
   }
-  await delay(5000);
+  await delay(10000);
   // for (var k = 0; k < RINGS.length; k++) {
   //   await setRingColor(k, 0, 255, 0, 1);
   // }
