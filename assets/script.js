@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         startAudio();
+        content.addEventListener("touchmove", handleTouchMove);
     };
 
     // WebSocket Messaging
@@ -386,5 +387,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     startButton.addEventListener("click", handleStartButtonClick);
-    content.addEventListener("touchmove", handleTouchMove);
 });
