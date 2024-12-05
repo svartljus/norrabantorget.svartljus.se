@@ -94,7 +94,7 @@ const COLOR_SUSTAIN_TIME = 700;
 let lightTargetState = "idle";
 let lightCurrentState = "off";
 let exitLiveDeadline = 0;
-let startTime = 0
+let startTime = 0;
 let connectionErrors = 0;
 
 let ringColorState = [
@@ -273,7 +273,7 @@ function connectToRelay() {
 
   ws.on("error", function error(e) {
     console.error("connection error", e);
-    connectionErrors ++;
+    connectionErrors++;
     ws = undefined;
   });
 
@@ -429,7 +429,7 @@ function reportErrors() {
 
   for (var k = 0; k < RINGS.length; k++) {
     const r = RINGS[k];
-    if (r.errorCount > 0){
+    if (r.errorCount > 0) {
       errorStats.ringErrors.push({
         ip: r.ip,
         errors: r.errorCount,
@@ -438,7 +438,7 @@ function reportErrors() {
     }
   }
 
-  console.log('Send error stats: ' + JSON.stringify(errorStats))
+  console.log("Send error stats: " + JSON.stringify(errorStats));
   if (ws) {
     ws.send(JSON.stringify(errorStats));
   }

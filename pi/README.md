@@ -19,7 +19,6 @@ From your machine, copy over the scripts:
     scp loop.sh dendro@192.168.1.10:dendro/
     scp color-mixer.service dendro@192.168.1.10:dendro/color-mixer.script
     scp color-mixer.timer dendro@192.168.1.10:dendro/color-mixer.timer
-
     scp ngrok.serice dendro@192.168.1.10:
 
 On the pi, run:
