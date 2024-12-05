@@ -387,6 +387,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    content.addEventListener("touchmove", handleTouchMove);
     startButton.addEventListener("click", handleStartButtonClick);
+    content.addEventListener("touchmove", handleTouchMove);
 });
