@@ -144,49 +144,44 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Modify the `handleEnter` function to call `setLightColors`
+    let lastNoteTime = 0; // Tracks the last note's start time
+
     const handleEnter = (light, event = undefined) => {
         if (event !== undefined) {
             event.preventDefault();
         }
 
-        // If random color toggle is checked, randomize the marker
         if (randomColorToggle.checked) {
             randomizeColorMarker();
         }
 
         const lightId = parseInt(light.dataset.id) - 1;
 
-        // Determine the adjusted color for the current light
         let adjustedColor;
         if (lightId < 4) {
-            // Lights 1-4: lighter
             adjustedColor = adjustColorBrightness(
                 activeColor,
                 10 * (4 - lightId)
             );
         } else if (lightId === 4 || lightId === 5) {
-            // Lights 5 and 6: base color
             adjustedColor = activeColor;
         } else {
-            // Lights 7-10: darker
             adjustedColor = adjustColorBrightness(
                 activeColor,
                 -10 * (lightId - 5)
             );
         }
 
-        // Apply the adjusted color to the current light
         setLightBackgroundColor(light, adjustedColor);
 
         if (audioStarted && currentNoteMapping.length === 10) {
             const note = currentNoteMapping[lightId];
             if (note && synth) {
                 try {
-                    if (typeof note === "string" && note !== "undefined") {
-                        synth.triggerAttackRelease(note, "16n", Tone.now());
-                    } else {
-                        console.error("Invalid note value", { note });
-                    }
+                    const now = Tone.now();
+                    const nextStartTime = Math.max(now, lastNoteTime + 0.1); // Ensure at least 100ms gap
+                    synth.triggerAttackRelease(note, "16n", nextStartTime);
+                    lastNoteTime = nextStartTime;
                 } catch (error) {
                     console.error("Error triggering note", { note, error });
                 }
