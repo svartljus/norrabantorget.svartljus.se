@@ -529,8 +529,11 @@ async function init() {
     parsed3.seg[1].sx = t1;
     parsed3.seg[0].grp = k + 1;
     parsed3.seg[1].grp = k + 1;
-    await configureRingPreset(k, OFF_PRESET, JSON.stringify(parsed3));
+    configureRingPreset(k, OFF_PRESET, JSON.stringify(parsed3));
+    await delay(500);
   }
+
+  await delay(3000);
 
   for (var k = 0; k < RINGS.length; k++) {
     const parsed2 = JSON.parse(COLOR_PRESET_SPEC);
@@ -538,8 +541,11 @@ async function init() {
     parsed2.seg[1].sx = t1;
     parsed2.seg[0].grp = k + 1;
     parsed2.seg[1].grp = k + 1;
-    await configureRingPreset(k, COLOR_PRESET, JSON.stringify(parsed2));
+    configureRingPreset(k, COLOR_PRESET, JSON.stringify(parsed2));
+    await delay(500);
   }
+
+  await delay(3000);
 
   // sync time
   console.log("Sync time...");
@@ -559,8 +565,8 @@ async function init() {
   await delay(2000);
 
   console.log("Running color test.");
-  // const c1 = getBreatheInColor()
-  // const c2 = getBreatheInColor()
+  const c1 = getBreatheInColor();
+  const c2 = getBreatheOutColor();
   // for (var k = 0; k < RINGS.length; k++) {
   //   await setRingColor(k, 255, 0, 0, 1);
   // }
