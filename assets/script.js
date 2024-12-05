@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const startScreen = document.getElementById("startScreen");
     const startButton = document.getElementById("startButton");
     const randomColorToggle = document.getElementById("randomColorToggle");
+    const isWithinDistance = false;
 
     // State Variables
     const ws = new WebSocket("wss://sync.possan.codes/broadcast/dendrolux");
@@ -58,7 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 targetCoordinates.lng
             );
 
-            if (distance > maxDistance) {
+            isWithinDistance = distance <= maxDistance;
+            if (!isWithinDistance) {
                 alert(
                     `You are not within range (${maxDistance} meters of the installation). You can still play, but actions won't impact the rings.\n\nPlease move closer and refresh the page if you'd like to enable ring interactions.`
                 );
@@ -202,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
             resetLightBackgroundColor(light);
         }, 300);
 
-        sendWebSocketMessage("enter", lightId + 1, adjustedColor);
+        if (isWithinDistance) sendWebSocketMessage("enter", lightId + 1, adjustedColor);
     };
 
     const handleTouchMove = (event) => {
