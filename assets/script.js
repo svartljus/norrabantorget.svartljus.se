@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Run the geofencing check on page load
     const targetCoordinates = { lat: 59.3351653, lng: 18.0542497 };
-    const maxDistance = 500; // in meters
+    const maxDistance = 200; // in meters
     
     // Function to calculate distance between two coordinates using Haversine formula
     function calculateDistance(lat1, lng1, lat2, lng2) {
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
                 if (distance > maxDistance) {
                     alert(
-                        "You are not within range (500 meters of the installation). You can still play, but actions won't impact the rings.\n\nPlease move closer and refresh the page if you'd like to enable ring interactions."
+                        `You are not within range (${maxDistance} meters of the installation). You can still play, but actions won't impact the rings.\n\nPlease move closer and refresh the page if you'd like to enable ring interactions.`
                     );
                 }
             },
