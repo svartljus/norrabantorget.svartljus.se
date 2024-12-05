@@ -177,7 +177,7 @@ function _sendStateToRing(index, stateUpdate) {
       "Content-Type": "application/json",
     },
     body: req,
-    signal: AbortSignal.timeout(1000),
+    signal: AbortSignal.timeout(2000),
   })
     .then((r) => r.json())
     .then((r) => {})
