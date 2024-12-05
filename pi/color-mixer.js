@@ -94,7 +94,7 @@ const COLOR_SUSTAIN_TIME = 700;
 let lightTargetState = "idle";
 let lightCurrentState = "off";
 let exitLiveDeadline = 0;
-let startTime = 0
+let startTime = 0;
 let connectionErrors = 0;
 
 let ringColorState = [
@@ -177,6 +177,7 @@ function _sendStateToRing(index, stateUpdate) {
       "Content-Type": "application/json",
     },
     body: req,
+    signal: AbortSignal.timeout(2000),
   })
     .then((r) => r.json())
     .then((r) => {})
@@ -211,18 +212,28 @@ function setRingColor(index, r, g, b, fadetime) {
   });
 }
 
-function setRingColorBreatheIn(index) {
+function getBreatheInColor() {
   let r1 = Math.round(255 + Math.random() * 0);
   let g1 = Math.round(140 + Math.random() * 0);
   let b1 = Math.round(50 + Math.random() * 0);
-  setRingColor(index, r1, g1, b1, BREATHE_IN_FADE_TIME);
+  return [r1, g1, b1];
 }
 
-function setRingColorBreatheOut(index) {
+function getBreatheOutColor() {
   let r1 = Math.round(80 + Math.random() * 0);
   let g1 = Math.round(30 + Math.random() * 0);
   let b1 = Math.round(0);
-  setRingColor(index, r1, g1, b1, BREATHE_OUT_FADE_TIME);
+  return [r1, g1, b1];
+}
+
+function setRingColorBreatheIn(index) {
+  const c = getBreatheInColor();
+  setRingColor(index, c[0], c[1], c[2], BREATHE_IN_FADE_TIME);
+}
+
+function setRingColorBreatheOut(index) {
+  const c = getBreatheOutColor();
+  setRingColor(index, c[0], c[1], c[2], BREATHE_OUT_FADE_TIME);
 }
 
 // function setRingModeIdle(index) {
@@ -273,7 +284,7 @@ function connectToRelay() {
 
   ws.on("error", function error(e) {
     console.error("connection error", e);
-    connectionErrors ++;
+    connectionErrors++;
     ws = undefined;
   });
 
@@ -429,7 +440,7 @@ function reportErrors() {
 
   for (var k = 0; k < RINGS.length; k++) {
     const r = RINGS[k];
-    if (r.errorCount > 0){
+    if (r.errorCount > 0) {
       errorStats.ringErrors.push({
         ip: r.ip,
         errors: r.errorCount,
@@ -438,7 +449,7 @@ function reportErrors() {
     }
   }
 
-  console.log('Send error stats: ' + JSON.stringify(errorStats))
+  console.log("Send error stats: " + JSON.stringify(errorStats));
   if (ws) {
     ws.send(JSON.stringify(errorStats));
   }
@@ -455,15 +466,21 @@ async function delay(ms) {
 async function init() {
   // configure exit handlers
 
-  startTime = (new Date()).getTime();
+  startTime = new Date().getTime();
 
   process.stdin.resume(); // so the program will not close instantly
 
   async function exitHandler(options, exitCode) {
     console.log("in Exit handler, fading out lights...", options, exitCode);
 
+    // for (var k = 0; k < RINGS.length; k++) {
+    //   await setRingModeColor(k);
+    // }
+
+    // await delay(3000);
+
     for (var k = 0; k < RINGS.length; k++) {
-      await setRingModeColor(k);
+      await setRingColor(k, 0, 0, 0, 1);
     }
 
     await delay(3000);
@@ -472,7 +489,7 @@ async function init() {
       await setRingColor(k, 0, 0, 0, 1);
     }
 
-    await delay(3000);
+    await delay(1000);
 
     console.log("lights should be off now.");
 
@@ -512,8 +529,11 @@ async function init() {
     parsed3.seg[1].sx = t1;
     parsed3.seg[0].grp = k + 1;
     parsed3.seg[1].grp = k + 1;
-    await configureRingPreset(k, OFF_PRESET, JSON.stringify(parsed3));
+    configureRingPreset(k, OFF_PRESET, JSON.stringify(parsed3));
+    await delay(500);
   }
+
+  await delay(3000);
 
   for (var k = 0; k < RINGS.length; k++) {
     const parsed2 = JSON.parse(COLOR_PRESET_SPEC);
@@ -521,8 +541,11 @@ async function init() {
     parsed2.seg[1].sx = t1;
     parsed2.seg[0].grp = k + 1;
     parsed2.seg[1].grp = k + 1;
-    await configureRingPreset(k, COLOR_PRESET, JSON.stringify(parsed2));
+    configureRingPreset(k, COLOR_PRESET, JSON.stringify(parsed2));
+    await delay(500);
   }
+
+  await delay(3000);
 
   // sync time
   console.log("Sync time...");
@@ -542,18 +565,26 @@ async function init() {
   await delay(2000);
 
   console.log("Running color test.");
+  const c1 = getBreatheInColor();
+  const c2 = getBreatheOutColor();
+  // for (var k = 0; k < RINGS.length; k++) {
+  //   await setRingColor(k, 255, 0, 0, 1);
+  // }
   for (var k = 0; k < RINGS.length; k++) {
-    await setRingColor(k, 255, 0, 0, 1);
+    await setRingColor(k, c1[0], c1[1], c1[2], BREATHE_IN_FADE_TIME);
   }
-  await delay(2000);
+  await delay(10000);
+  // for (var k = 0; k < RINGS.length; k++) {
+  //   await setRingColor(k, 0, 255, 0, 1);
+  // }
   for (var k = 0; k < RINGS.length; k++) {
-    await setRingColor(k, 0, 255, 0, 1);
+    await setRingColor(k, c2[0], c2[1], c2[2], BREATHE_OUT_FADE_TIME);
   }
-  await delay(2000);
-  for (var k = 0; k < RINGS.length; k++) {
-    await setRingColor(k, 0, 0, 255, 1);
-  }
-  await delay(2000);
+  await delay(5000);
+  // for (var k = 0; k < RINGS.length; k++) {
+  //   await setRingColor(k, 0, 0, 255, 1);
+  // }
+  // await delay(2000);
   for (var k = 0; k < RINGS.length; k++) {
     await setRingColor(k, 0, 0, 0, 1);
   }
