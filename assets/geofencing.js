@@ -43,6 +43,8 @@ function handleStartButtonClick() {
             );
         }
     );
+    
+    startAudio();
 }
 
 // Run the geofencing check on page load
