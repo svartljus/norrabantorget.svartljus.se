@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const startButton = document.getElementById("startButton");
     const randomColorToggle = document.getElementById("randomColorToggle");
 
-    
     // State Variables
     const ws = new WebSocket("wss://sync.possan.codes/broadcast/dendrolux");
     let activeColor = [255, 0, 0];
@@ -364,6 +363,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     content.addEventListener("touchmove", handleTouchMove);
-    startButton.addEventListener("click", handleStartButtonClick);
     startButton.addEventListener("click", startAudio);
 });
