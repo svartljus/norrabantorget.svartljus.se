@@ -177,6 +177,7 @@ function _sendStateToRing(index, stateUpdate) {
       "Content-Type": "application/json",
     },
     body: req,
+    signal: AbortSignal.timeout(1000),
   })
     .then((r) => r.json())
     .then((r) => {})
@@ -211,18 +212,28 @@ function setRingColor(index, r, g, b, fadetime) {
   });
 }
 
-function setRingColorBreatheIn(index) {
+function getBreatheInColor() {
   let r1 = Math.round(255 + Math.random() * 0);
   let g1 = Math.round(140 + Math.random() * 0);
   let b1 = Math.round(50 + Math.random() * 0);
-  setRingColor(index, r1, g1, b1, BREATHE_IN_FADE_TIME);
+  return [r1, g1, b1];
 }
 
-function setRingColorBreatheOut(index) {
+function getBreatheOutColor() {
   let r1 = Math.round(80 + Math.random() * 0);
   let g1 = Math.round(30 + Math.random() * 0);
   let b1 = Math.round(0);
-  setRingColor(index, r1, g1, b1, BREATHE_OUT_FADE_TIME);
+  return [r1, g1, b1];
+}
+
+function setRingColorBreatheIn(index) {
+  const c = getBreatheInColor();
+  setRingColor(index, c[0], c[1], c[2], BREATHE_IN_FADE_TIME);
+}
+
+function setRingColorBreatheOut(index) {
+  const c = getBreatheOutColor();
+  setRingColor(index, c[0], c[1], c[2], BREATHE_OUT_FADE_TIME);
 }
 
 // function setRingModeIdle(index) {
@@ -455,15 +466,21 @@ async function delay(ms) {
 async function init() {
   // configure exit handlers
 
-  startTime = (new Date()).getTime();
+  startTime = new Date().getTime();
 
   process.stdin.resume(); // so the program will not close instantly
 
   async function exitHandler(options, exitCode) {
     console.log("in Exit handler, fading out lights...", options, exitCode);
 
+    // for (var k = 0; k < RINGS.length; k++) {
+    //   await setRingModeColor(k);
+    // }
+
+    // await delay(3000);
+
     for (var k = 0; k < RINGS.length; k++) {
-      await setRingModeColor(k);
+      await setRingColor(k, 0, 0, 0, 1);
     }
 
     await delay(3000);
@@ -472,7 +489,7 @@ async function init() {
       await setRingColor(k, 0, 0, 0, 1);
     }
 
-    await delay(3000);
+    await delay(1000);
 
     console.log("lights should be off now.");
 
@@ -542,18 +559,26 @@ async function init() {
   await delay(2000);
 
   console.log("Running color test.");
+  // const c1 = getBreatheInColor()
+  // const c2 = getBreatheInColor()
+  // for (var k = 0; k < RINGS.length; k++) {
+  //   await setRingColor(k, 255, 0, 0, 1);
+  // }
   for (var k = 0; k < RINGS.length; k++) {
-    await setRingColor(k, 255, 0, 0, 1);
+    await setRingColor(k, c1[0], c1[1], c1[2], BREATHE_IN_FADE_TIME);
   }
-  await delay(2000);
+  await delay(5000);
+  // for (var k = 0; k < RINGS.length; k++) {
+  //   await setRingColor(k, 0, 255, 0, 1);
+  // }
   for (var k = 0; k < RINGS.length; k++) {
-    await setRingColor(k, 0, 255, 0, 1);
+    await setRingColor(k, c2[0], c2[1], c2[2], BREATHE_OUT_FADE_TIME);
   }
-  await delay(2000);
-  for (var k = 0; k < RINGS.length; k++) {
-    await setRingColor(k, 0, 0, 255, 1);
-  }
-  await delay(2000);
+  await delay(5000);
+  // for (var k = 0; k < RINGS.length; k++) {
+  //   await setRingColor(k, 0, 0, 255, 1);
+  // }
+  // await delay(2000);
   for (var k = 0; k < RINGS.length; k++) {
     await setRingColor(k, 0, 0, 0, 1);
   }
