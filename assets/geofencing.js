@@ -1,4 +1,3 @@
-// Geofencing.js
 const targetCoordinates = { lat: 59.3351653, lng: 18.0542497 };
 const maxDistance = 500; // in meters
 
@@ -8,7 +7,7 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
     const toRadians = (degrees) => (degrees * Math.PI) / 180;
 
     const dLat = toRadians(lat2 - lat1);
-    const dLng = toRadians(lat2 - lng1);
+    const dLng = toRadians(lng2 - lng1);
     const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(toRadians(lat1)) *
@@ -19,23 +18,8 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
     return R * c;
 }
 
-function checkGeofencing() {
+function handleStartButtonClick() {
     const startButton = document.getElementById("startButton");
-
-    // Check for admin bypass in the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has("admin")) {
-        alert("Admin bypass activated. Geofencing check skipped.");
-        startButton.disabled = false;
-        return;
-    }
-
-    if (!navigator.geolocation) {
-        alert("Geolocation is not supported by your browser.");
-        startButton.textContent = "Geolocation Not Supported";
-        startButton.disabled = true;
-        return;
-    }
 
     navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -47,21 +31,22 @@ function checkGeofencing() {
                 targetCoordinates.lng
             );
 
-            if (distance <= maxDistance) {
-                startButton.disabled = false;
-            } else {
-                alert("You need to be within 500 meters of the installation to play.");
-                startButton.textContent = "Out of Range";
-                startButton.disabled = true;
+            if (distance > maxDistance) {
+                alert(
+                    "You are not within range (500 meters of the installation). You can still play, but actions won't impact the rings.\n\nPlease move closer and refresh the page if you'd like to enable ring interactions."
+                );
             }
         },
         (error) => {
-            alert("Unable to retrieve your location.");
-            startButton.textContent = "Location Error";
-            startButton.disabled = true;
+            alert(
+                "Unable to retrieve your location. GPS is required for range verification."
+            );
         }
     );
 }
 
 // Run the geofencing check on page load
-document.addEventListener("DOMContentLoaded", checkGeofencing);
+document.addEventListener("DOMContentLoaded", () => {
+    const startButton = document.getElementById("startButton");
+    startButton.addEventListener("click", handleStartButtonClick);
+});
