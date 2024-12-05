@@ -147,33 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     };
 
-    const setLightColors = () => {
-        const baseColor = activeColor;
-        const lightsArray = Array.from(lights);
-
-        lightsArray.forEach((light, index) => {
-            let adjustedColor;
-            if (index < 4) {
-                // Lights 1-4: lighter
-                adjustedColor = adjustColorBrightness(
-                    baseColor,
-                    10 * (4 - index)
-                );
-            } else if (index === 4 || index === 5) {
-                // Lights 5 and 6: base color
-                adjustedColor = baseColor;
-            } else {
-                // Lights 7-10: darker
-                adjustedColor = adjustColorBrightness(
-                    baseColor,
-                    -10 * (index - 5)
-                );
-            }
-
-            setLightBackgroundColor(light, adjustedColor);
-        });
-    };
-
     // Modify the `handleEnter` function to call `setLightColors`
     const handleEnter = (light, event = undefined) => {
         if (event !== undefined) {
@@ -416,5 +389,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     content.addEventListener("touchmove", handleTouchMove);
     startButton.addEventListener("click", handleStartButtonClick);
-    // startButton.addEventListener("click", startAudio);
 });
