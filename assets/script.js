@@ -17,16 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let audioStarted = false;
     let synth = null;
 
-
     // Run the geofencing check on page load
     const targetCoordinates = { lat: 59.3351653, lng: 18.0542497 };
     const maxDistance = 200; // in meters
-    
+
     // Function to calculate distance between two coordinates using Haversine formula
-    function calculateDistance(lat1, lng1, lat2, lng2) {
+    const calculateDistance = (lat1, lng1, lat2, lng2) => {
         const R = 6371e3; // Earth radius in meters
         const toRadians = (degrees) => (degrees * Math.PI) / 180;
-    
+
         const dLat = toRadians(lat2 - lat1);
         const dLng = toRadians(lng2 - lng1);
         const a =
@@ -37,10 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 Math.sin(dLng / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
-    }
-    
-    function handleStartButtonClick() {
-    
+    };
+
+    const handleStartButtonClick = () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
@@ -50,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     targetCoordinates.lat,
                     targetCoordinates.lng
                 );
-    
+
                 if (distance > maxDistance) {
                     alert(
                         `You are not within range (${maxDistance} meters of the installation). You can still play, but actions won't impact the rings.\n\nPlease move closer and refresh the page if you'd like to enable ring interactions.`
@@ -65,9 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         startAudio();
-    }
-    
-    
+    };
 
     // WebSocket Messaging
     const sendWebSocketMessage = (type, id, color) => {
@@ -88,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const handleGradientTouchMove = (event) => {
         event.preventDefault(); // Prevent default scrolling behavior
-    
+
         const touch = event.touches[0];
         const rect = gradientPicker.getBoundingClientRect();
         const x = Math.max(0, Math.min(touch.clientX - rect.left, rect.width));
