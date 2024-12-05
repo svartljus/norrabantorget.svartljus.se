@@ -55,16 +55,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert(
                         "You are not within range (500 meters of the installation). You can still play, but actions won't impact the rings.\n\nPlease move closer and refresh the page if you'd like to enable ring interactions."
                     );
-                    startAudio();
                 }
             },
             (error) => {
                 alert(
                     "Unable to retrieve your location. GPS is required for range verification."
                 );
-                startAudio();
             }
         );
+
+        startAudio();
     }
     
     
