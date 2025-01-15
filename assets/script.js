@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const handleStartButtonClick = async () => {
-       /* const getPosition = () => {
+       const getPosition = () => {
             return new Promise((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(
                     (position) => resolve(position),
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert(
                 "Unable to retrieve your location. GPS is required for range verification."
             );
-        }*/
+        }
 
         startAudio();
         content.addEventListener("touchmove", handleTouchMove);
@@ -160,6 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event !== undefined) {
             event.preventDefault();
         }
+        console.log(event);
 
         if (randomColorToggle.checked) {
             randomizeColorMarker();
