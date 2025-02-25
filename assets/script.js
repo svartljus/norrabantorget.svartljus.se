@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     ws.onerror = ws.onclose = () => {
       alert(
-        "Unfortunately the Dendrolux server is not functional at the moment"
+        "Unfortunately the Dendrolux server is not functional at the moment and the lights won't respond to your input."
       );
     };
   }
