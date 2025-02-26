@@ -21,12 +21,34 @@ document.addEventListener("DOMContentLoaded", () => {
   function connectWebSocket() {
     ws = new WebSocket("wss://sync.possan.codes/broadcast/dendrolux");
 
-    ws.onopen = () => console.log("WebSocket connected");
+    let errorStatsReceived = false;
+    let errorTimeout = setTimeout(() => {
+      if (!errorStatsReceived) {
+        // alert("Error: 'error-stats' message not received within 10 seconds.");
+        alert(
+          "Unfortunately, the Dendrolux server is not functional at the moment and the lights won't respond to your input."
+        );
+      }
+    }, 10000); // 10 seconds timeout
+
+    ws.onopen = () => {
+      console.log("WebSocket connected");
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === "error-stats") {
+          errorStatsReceived = true;
+          clearTimeout(errorTimeout);
+        }
+      } catch (err) {
+        console.error("Error parsing WebSocket message", err);
+      }
+    };
 
     ws.onerror = ws.onclose = () => {
-      alert(
-        "Unfortunately the Dendrolux server is not functional at the moment and the lights won't respond to your input."
-      );
+      //learTimeout(errorTimeout);
     };
   }
 
