@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const data = JSON.parse(event.data);
         if (data.type === "error-stats") {
+          console.log(data);
           errorStatsReceived = true;
           clearTimeout(errorTimeout);
         }
